@@ -43,5 +43,5 @@ Herop.prototype.scroll = function () {
 };
 
 Herop.prototype.scrollEvent = function () {
-    console.log('scroll~');
+    // command...
 };
