@@ -1,35 +1,35 @@
-$(document).ready(function () {
+$(function () {
     var herop = new Herop();
 });
 
 var Herop = function () {
-    this.init();
-    this.initEvent();
+    this._init();
+    this._initEvent();
 };
 
 // INIT
-Herop.prototype.init = function () {
-    this.didScroll = false;
-    this.$scroll = $(window);
+Herop.prototype._init = function () {
+    this._lockScroll = false;
+    this._$scrollBody = $(window);
 };
 
 // INIT EVENT
-Herop.prototype.initEvent = function () {
-    this.scrollLock();
+Herop.prototype._initEvent = function () {
+    this._throttleScroll();
     this.scroll();
     this.plugins();
 };
 
 // PLUGINS
 Herop.prototype.plugins = function () {
-    
+
 };
 
-Herop.prototype.scrollLock = function () {
+Herop.prototype._throttleScroll = function () {
     var that = this;
     setInterval(function () {
-        if (that.didScroll) {
-            that.didScroll = false;
+        if (that._lockScroll) {
+            that._lockScroll = false;
             that.scrollEvent();
         }
     }, 500);
@@ -37,11 +37,11 @@ Herop.prototype.scrollLock = function () {
 
 Herop.prototype.scroll = function () {
     var that = this;
-    that.$scroll.on('scroll', function () {
-        that.didScroll = true;
+    that._$scrollBody.on('scroll', function () {
+        that._lockScroll = true;
     });
 };
 
 Herop.prototype.scrollEvent = function () {
-    console.log('didScroll');
+    console.log('scroll~');
 };
