@@ -14,8 +14,7 @@ var Herop = function () {
 Herop.prototype._init = function () {
     this._lockScroll = false;
     this.throttleDuration = 400;
-    this._$scrollBody = $(window);
-
+    this.$scrollBody = $('html');
 };
 // INIT EVENT
 Herop.prototype._initEvent = function () {
@@ -27,6 +26,7 @@ Herop.prototype._initEvent = function () {
 Herop.prototype.plugins = function () {
     this.niceScroll();
     this.bxSlider();
+    this.tweenAnimation();
 };
 
 Herop.prototype._throttleScroll = function () {
@@ -41,7 +41,7 @@ Herop.prototype._throttleScroll = function () {
 
 Herop.prototype.scroll = function () {
     var that = this;
-    that._$scrollBody.on('scroll', function () {
+    that.$scrollBody.on('scroll', function () {
         that._lockScroll = true;
     });
 };
@@ -52,7 +52,7 @@ Herop.prototype.scrollEvent = function () {
 
 Herop.prototype.niceScroll = function () {
     // Options: https://github.com/inuyaksa/jquery.nicescroll
-    this._$scrollBody.niceScroll({
+    this.$scrollBody.niceScroll({
         cursorcolor: "black",
         cursorwidth: 10,
         scrollspeed: 60,
@@ -77,7 +77,7 @@ Herop.prototype.bxSlider = function () {
         easing: null, // 슬라이드 'easing' 타입
         captions: false, // 이미지에 타이틀(캡션) 포함 여부
         responsive: true, // 반응형 슬라이드 유무
-        preloadImages: 'all', // 보이는 이미지만 로드할 것인지, 미리 전부 로드할 것인지 설정
+        preloadImages: 'all', // 보이는 이미지만 로드 or 미리 로드 설정
         pager: true, // 페이지 번호
         pagerSelector: '', // 페이지 번호 선택자
         controls: true, // 이전/다음
@@ -100,8 +100,13 @@ Herop.prototype.bxSlider = function () {
         maxSlides: 1, // 최대 슬라이드 갯수
         moveSlides: 0, // 한번에 움직일 슬라이드의 갯수
         slideWidth: 0, // 슬라이드 가로 너비
-        onSliderLoad: function(currentIndex){}, // 슬라이드 준비
+        onSliderLoad: function(currentIndex){}, // 슬라이드 준비되면
         onSlideBefore: function($slideElement, oldIndex, newIndex){}, // 슬라이드 전환 직전
         onSlideAfter: function($slideElement, oldIndex, newIndex){} // 슬라이드 전환 직후
     });
+};
+
+Herop.prototype.tweenAnimation = function () {
+    (function () { var $obj = $('.selector');
+        TweenMax.to( $obj, 2, { marginTop:20, yoyo:true, repeat:-1, ease:Power1.easeInOut });})();
 };
