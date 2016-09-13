@@ -2,7 +2,7 @@
 $(function () {
     var herop = new Herop();
     $(window).load(function () {
-
+        herop.setSectionOffset();
     });
 });
 // NEW
@@ -15,6 +15,7 @@ Herop.prototype._init = function () {
     this._lockScroll = false;
     this.throttleDuration = 400;
     this.$scrollBody = $('html');
+    this.secPos = [0];
 };
 // INIT EVENT
 Herop.prototype._initEvent = function () {
@@ -48,6 +49,16 @@ Herop.prototype.scroll = function () {
 
 Herop.prototype.scrollEvent = function () {
     // Command..
+};
+
+Herop.prototype.setSectionOffset = function () {
+    this.secPos = [
+        $('#sec1').offset.top
+        , $('#sec2').offset.top
+        , $('#sec3').offset.top
+        , $('#sec4').offset.top
+        , $('#sec5').offset.top
+    ];
 };
 
 Herop.prototype.niceScroll = function () {
