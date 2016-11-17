@@ -1,4 +1,4 @@
-sdf$(function () {
+$(function () {
     new Herop();
 });
 
