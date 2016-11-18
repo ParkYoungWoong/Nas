@@ -13,6 +13,8 @@
 
 ## function
 
-### throttle scroll
+### Throttle scroll.
 
-### offset of the section
+### Offset of the section.
+
+### Duplicate load processing.

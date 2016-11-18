@@ -23,6 +23,7 @@ Herop.prototype = {
         this._scroll();
         this._plugins();
         this.offsetOfEachSection();
+        this.windowLoad();
     },
 
     _plugins: function () {
@@ -132,6 +133,31 @@ Herop.prototype = {
             .set($o, {opacity: 0})
             .to($o.find('img'), 1, {width: 55, marginTop: 6, marginLeft: 6, ease: Power0.easeNone}, '-=1')
             .from($o, 1, {top: 170, left: 215, ease: Power0.easeNone});
+    },
+
+    addWindowLoadEvent: function (func) {  // 중복 로드(load) 처리
+        var oldonload = window.onload;
+        if (typeof window.onload != 'function') {
+            if (document.all && !document.querySelector) {
+                window.onload = func;
+            } else {
+                window.onload = func();
+            }
+        } else {
+            window.onload = function() {
+                if (oldonload) {
+                    oldonload();
+                }
+                func();
+            }
+        }
+    },
+
+    windowLoad: function () {
+        this.addWindowLoadEvent(function () {
+            // $(window).load({ ...
+
+        });
     }
 
 };
