@@ -5,11 +5,11 @@
 
 ## plugins
 
-### [niceScroll.js](https://github.com/inuyaksa/jquery.nicescroll)
+### [niceScroll.js](https://github.com/inuyaksa/jquery.nicescroll){:target="_blank"}
 
-### [bxSlider.js](http://bxslider.com/options)
+### [bxSlider.js](http://bxslider.com/options){:target="_blank"}
 
-### [TweenMax.js (TimeLine)](https://greensock.com/docs/#/HTML5/GSAP/)
+### [TweenMax.js (TimeLine)](https://greensock.com/docs/#/HTML5/GSAP/){:target="_blank"}
 
 ## function
 
