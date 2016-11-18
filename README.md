@@ -3,7 +3,7 @@
 - Description: use to 학생 프로젝트
 
 ## plugins
-### niceScroll.js
+### [niceScroll.js](https://github.com/inuyaksa/jquery.nicescroll)
 Options `https://github.com/inuyaksa/jquery.nicescroll`
 
 ### bxSlider.js
