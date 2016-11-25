@@ -3,27 +3,25 @@ $(function () {
 });
 
 var Herop = function () {
-    this._init();
+    this._lockScroll = false;
+    this.throttleDuration = 400;  // 스크롤 파악 속도: Number
+    this.$scrollBody = $('html');  // 스크롤 선택자: String
+    this.scrollDirection = 'top';  // 스크롤 방향: String ['top', 'left']
+    this.findingSection = true;  // 섹션 위치 파악: Boolean
+    this.sec = ['#sec1', '#sec2', '#sec3', '#sec4'];  // 섹션 선택자: Array
+    this.secPos = [];
+    this.scrollLocate = 0;
+
     this._initEvent();
 };
 
 Herop.prototype = {
 
-    // INITIALIZE
-    _init: function () {
-        this._lockScroll = false;
-        this._secPos = [];
-        this.findingSection = false;  // set offset of the sections : Boolean
-        this.$scrollBody = $('html');  // scroll selector: String
-        this.throttleDuration = 400;  // scroll speed: Number
-    },
-
     // EVENT
     _initEvent: function () {
         this._scroll();
         this._plugins();
-        this.offsetOfEachSection();
-        this.windowLoad();
+        this.windowLoad();  // window load!
     },
 
     _plugins: function () {
@@ -51,27 +49,56 @@ Herop.prototype = {
 
         scrollBody.on('scroll', function () {
             _this._lockScroll = true;
+            _this.scrollLocate = _this.scrollDirection === 'top' ? $(this).scrollTop() : $(this).scrollLeft();
         });
-    },
-
-    scrollEvent: function () {
-        console.log('scroll..');
     },
 
     offsetOfEachSection: function () {
         if (this.findingSection) {
-            $(window).load(function () {
-                this._secPos = [
-                    $('#sec1').offset().top,
-                    $('#sec2').offset().top,
-                    $('#sec3').offset().top,
-                    $('#sec4').offset().top
-                ];
-                for (var i = 0; i < this._secPos.length; i++) {
-                    console.log(this._secPos[i]);
+            var _this = this;
+            var _result = null;
+
+            this.sec.forEach(function (item, index, array) {
+                switch (_this.scrollDirection) {
+                    case 'top':
+                        _result = $(item).offset().top;
+                        break;
+                    case 'left':
+                        _result = $(item).offset().left;
+                        break;
                 }
+
+                _this.secPos.push(_result);
             });
         }
+    },
+
+    addWindowLoadEvent: function (func) {  // 중복 로드(load) 처리
+        var oldonload = window.onload;
+        if (typeof window.onload != 'function') {
+            if (document.all && !document.querySelector) {
+                window.onload = func;
+            } else {
+                window.onload = func();
+            }
+        } else {
+            window.onload = function () {
+                if (oldonload) {
+                    oldonload();
+                }
+                func();
+            }
+        }
+    },
+
+    windowLoad: function () {
+        var _this = this;
+
+        // $(window).load({ ...
+        this.addWindowLoadEvent(function () {
+            _this.offsetOfEachSection();
+
+        });
     },
 
     niceScroll: function () {
@@ -126,38 +153,20 @@ Herop.prototype = {
     },
 
     timeLineAnimation: function () {
-        var tween = new TimelineMax({repeat: -1});
-        var $o = $('.selector');
-        tween
-            .set($o.find('img'), {width: 35, marginTop: 20, marginLeft: 20})
-            .set($o, {opacity: 0})
-            .to($o.find('img'), 1, {width: 55, marginTop: 6, marginLeft: 6, ease: Power0.easeNone}, '-=1')
-            .from($o, 1, {top: 170, left: 215, ease: Power0.easeNone});
+        // animation 1
+        (function () {
+            var tween = new TimelineMax({repeat: -1});
+            var $o = $('.selector');
+            tween
+                .set($o.find('img'), {width: 35, marginTop: 20, marginLeft: 20})
+                .set($o, {opacity: 0})
+                .to($o.find('img'), 1, {width: 55, marginTop: 6, marginLeft: 6, ease: Power0.easeNone}, '-=1')
+                .from($o, 1, {top: 170, left: 215, ease: Power0.easeNone});
+        }());
     },
 
-    addWindowLoadEvent: function (func) {  // 중복 로드(load) 처리
-        var oldonload = window.onload;
-        if (typeof window.onload != 'function') {
-            if (document.all && !document.querySelector) {
-                window.onload = func;
-            } else {
-                window.onload = func();
-            }
-        } else {
-            window.onload = function() {
-                if (oldonload) {
-                    oldonload();
-                }
-                func();
-            }
-        }
-    },
-
-    windowLoad: function () {
-        this.addWindowLoadEvent(function () {
-            // $(window).load({ ...
-
-        });
+    scrollEvent: function () {
+        console.log(this.scrollLocate);
     }
 
 };
