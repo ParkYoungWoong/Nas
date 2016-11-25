@@ -59,16 +59,18 @@ Herop.prototype = {
             var _result = null;
 
             this.sec.forEach(function (item, index, array) {
-                switch (_this.scrollDirection) {
-                    case 'top':
-                        _result = $(item).offset().top;
-                        break;
-                    case 'left':
-                        _result = $(item).offset().left;
-                        break;
-                }
+                if (!$(item).length === 0) {
+                    switch (_this.scrollDirection) {
+                        case 'top':
+                            _result = $(item).offset().top;
+                            break;
+                        case 'left':
+                            _result = $(item).offset().left;
+                            break;
+                    }
 
-                _this.secPos.push(_result);
+                    _this.secPos.push(_result);
+                }
             });
         }
     },
