@@ -6,9 +6,9 @@
 ## plugins
 
 ```js
-<script src="js/plugin/jquery.nicescroll.min.js"></script>
-<script src="js/plugin/jquery.bxslider.min.js"></script>
-<script src="js/plugin/TweenMax.min.js"></script>
+<script src="js/plugins/jquery.nicescroll.min.js"></script>
+<script src="js/plugins/jquery.bxslider.min.js"></script>
+<script src="js/plugins/TweenMax.min.js"></script>
 ```
 
 ### [niceScroll.js](https://github.com/inuyaksa/jquery.nicescroll)
