@@ -4,10 +4,10 @@ $(function () {
 
 var Herop = function () {
     this._lockScroll = false;
-    this.throttleDuration = 400;  // 스크롤 파악 속도: Number
+    this.throttleDuration = 200;  // 스크롤 파악 속도: Number
     this.$scrollBody = $('html');  // 스크롤 선택자: String
     this.scrollDirection = 'top';  // 스크롤 방향: String ['top', 'left']
-    this.findingSection = true;  // 섹션 위치 파악: Boolean
+    this.findingSection = false;  // 섹션 위치 파악: Boolean
     this.sec = ['#sec1', '#sec2', '#sec3', '#sec4'];  // 섹션 선택자: Array
     this.secPos = [];
     this.scrollLocate = 0;
@@ -59,7 +59,7 @@ Herop.prototype = {
             var _result = null;
 
             this.sec.forEach(function (item, index, array) {
-                if (!$(item).length === 0) {
+                if ($(item).length !== 0) {
                     switch (_this.scrollDirection) {
                         case 'top':
                             _result = $(item).offset().top;
