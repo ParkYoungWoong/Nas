@@ -1,37 +1,34 @@
-$(function () {
-    new Herop();
-});
+class Herop {
+    constructor() {
+        this._lockScroll = false;
+        this.throttleDuration = 200;  // 스크롤 파악 속도: Number
+        this.$scrollBody = $('html');  // 스크롤 선택자: String
+        this.scrollLocate = 0;
+        this.findingSection = true;  // 섹션 위치 파악: Boolean
+        this.scrollDirection = 'top';  // 스크롤 방향: String ['top', 'left']
+        this.numberOfSection = 5;  // 섹션의 개수: Number, 각 섹션의 ID 를 `sec$` 로 설정하세요!
+        this.sec = [];
+        this.secPos = [];
+        this.slider = {};
 
-var Herop = function () {
-    this._lockScroll = false;
-    this.throttleDuration = 200;  // 스크롤 파악 속도: Number
-    this.$scrollBody = $('html');  // 스크롤 선택자: String
-    this.scrollDirection = 'top';  // 스크롤 방향: String ['top', 'left']
-    this.findingSection = false;  // 섹션 위치 파악: Boolean
-    this.sec = ['#sec1', '#sec2', '#sec3', '#sec4'];  // 섹션 선택자: Array
-    this.secPos = [];
-    this.scrollLocate = 0;
-
-    this._initEvent();
-};
-
-Herop.prototype = {
+        this._initEvent();
+    }
 
     // EVENT
-    _initEvent: function () {
+    _initEvent() {
         this._scroll();
         this._plugins();
         this.windowLoad();  // window load!
-    },
+    }
 
-    _plugins: function () {
+    _plugins() {
         this.niceScroll();
         this.bxSlider();
         this.tweenMax();
-    },
+    }
 
-    _throttleScroll: function () {
-        var _this = this;
+    _throttleScroll() {
+        let _this = this;
 
         setInterval(function () {
             if (_this._lockScroll) {
@@ -39,28 +36,35 @@ Herop.prototype = {
                 _this.scrollEvent();
             }
         }, this.throttleDuration);
-    },
+    }
 
-    _scroll: function () {
+    _scroll() {
         this._throttleScroll();
 
-        var scrollBody = this.$scrollBody.selector === 'html' ? $(document) : this.$scrollBody;
-        var _this = this;
+        let scrollBody = this.$scrollBody.selector === 'html' ? $(document) : this.$scrollBody;
+        let _this = this;
 
         scrollBody.on('scroll', function () {
             _this._lockScroll = true;
             _this.scrollLocate = _this.scrollDirection === 'top' ? $(this).scrollTop() : $(this).scrollLeft();
         });
-    },
+    }
 
-    offsetOfEachSection: function () {
-        if (this.findingSection) {
-            var _this = this;
-            var _result = null;
+    createSectionArray(callback) {
+        for (let i = 0; i < this.numberOfSection; i++) {
+            this.sec.push('#sec' + (i+1));
+        }
+        callback(this, this.sec);
+    }
 
-            this.sec.forEach(function (item, index, array) {
+    offsetOfEachSection(_this, section) {
+        if (_this.findingSection) {
+            let _that = _this;
+            let _result = null;
+
+            section.forEach(function (item, index, array) {
                 if ($(item).length !== 0) {
-                    switch (_this.scrollDirection) {
+                    switch (_that.scrollDirection) {
                         case 'top':
                             _result = $(item).offset().top;
                             break;
@@ -69,14 +73,16 @@ Herop.prototype = {
                             break;
                     }
 
-                    _this.secPos.push(_result);
+                    _that.secPos.push(_result);
                 }
             });
-        }
-    },
 
-    addWindowLoadEvent: function (func) {  // 중복 로드(load) 처리
-        var oldonload = window.onload;
+            console.info('EACH SECTION: ' + _that.secPos);
+        }
+    }
+
+    addWindowLoadEvent(func) {  // 중복 로드(load) 처리
+        let oldonload = window.onload;
         if (typeof window.onload != 'function') {
             if (document.all && !document.querySelector) {
                 window.onload = func;
@@ -91,19 +97,23 @@ Herop.prototype = {
                 func();
             }
         }
-    },
+    }
 
-    windowLoad: function () {
-        var _this = this;
+    windowLoad() {
+        let _this = this;
 
         // $(window).load({ ...
         this.addWindowLoadEvent(function () {
-            _this.offsetOfEachSection();
-
+            _this.createSectionArray(_this.offsetOfEachSection);
+            console.info('WINDOW LOADING COMPLETED');
         });
-    },
+    }
 
-    niceScroll: function () {
+    scrollEvent() {
+        console.log('CURRENT SCROLL: ' + this.scrollLocate);
+    }
+
+    niceScroll() {
         // Options: https://github.com/inuyaksa/jquery.nicescroll
         this.$scrollBody.niceScroll({
             cursorcolor: "black",
@@ -117,11 +127,13 @@ Herop.prototype = {
             boxzoom: false,
             zindex: 990
         });
-    },
+    }
 
-    bxSlider: function () {
+    bxSlider() {
+        let _this = this;
+
         // Options: http://bxslider.com/options
-        $('#selector').bxSlider({
+        this.slider.s1 = $('selector').bxSlider({
             mode: 'horizontal', // 슬라이드 종류
             speed: 500, // 슬라이드 속도
             slideMargin: 0, // 슬라이드 사이 여백
@@ -142,33 +154,32 @@ Herop.prototype = {
             onSlideAfter: function ($slideElement, oldIndex, newIndex) {
             } // 슬라이드 전환 직후
         });
-    },
+    }
 
-    tweenMax: function () {
+    tweenMax() {
         // Documentation: https://greensock.com/docs/#/HTML5/GSAP/
         this.tweenAnimation();
         this.timeLineAnimation();
-    },
+    }
 
-    tweenAnimation: function () {
-        TweenMax.to($('.selector'), 2, {marginTop: 20, yoyo: true, repeat: -1, ease: Power1.easeInOut});
-    },
+    tweenAnimation() {
+        TweenMax.to($('.selector'), 2, { marginTop: 20, yoyo: true, repeat: -1, ease: Power1.easeInOut });
+    }
 
-    timeLineAnimation: function () {
+    timeLineAnimation() {
         // animation 1
         (function () {
-            var tween = new TimelineMax({repeat: -1});
-            var $o = $('.selector');
+            let tween = new TimelineMax({ repeat: -1 });
+            let $o = $('.selector');
             tween
                 .set($o.find('img'), {width: 35, marginTop: 20, marginLeft: 20})
                 .set($o, {opacity: 0})
                 .to($o.find('img'), 1, {width: 55, marginTop: 6, marginLeft: 6, ease: Power0.easeNone}, '-=1')
                 .from($o, 1, {top: 170, left: 215, ease: Power0.easeNone});
         }());
-    },
-
-    scrollEvent: function () {
-        console.log(this.scrollLocate);
     }
 
-};
+}
+
+// 객체 생성
+$(() => { new Herop(); });
