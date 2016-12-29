@@ -1,26 +1,18 @@
-# class Herop
+# mainJS
 
-- Author: 박영웅
-- Description: use to 학생 프로젝트
+## Call the JavaScript
 
-## plugins
+```html
+<!--[if lt ie 9]>
+    <script src="js/lib/respond.min.js"></script>
+<![endif]-->
 
-```js
+<script src="js/lib/jquery.min.js"></script>
+<script src="js/lib/jquery.easing.min.js"></script>
+<script src="js/lib/modernizr.js"></script>
+
+<script src="js/plugins/prefixfree.min.js"></script>
+<script src="js/plugins/TweenMax.min.js"></script>
 <script src="js/plugins/jquery.nicescroll.min.js"></script>
 <script src="js/plugins/jquery.bxslider.min.js"></script>
-<script src="js/plugins/TweenMax.min.js"></script>
 ```
-
-### [niceScroll.js](https://github.com/inuyaksa/jquery.nicescroll)
-
-### [bxSlider.js](http://bxslider.com/options)
-
-### [TweenMax.js (TimeLine)](https://greensock.com/docs/#/HTML5/GSAP/)
-
-## function
-
-### Throttle scroll.
-
-### Offset of the section.
-
-### Duplicate load processing.

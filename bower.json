@@ -1,0 +1,27 @@
+{
+  "name": "Herop",
+  "description": "HTML5 Boilerplate for Herop",
+  "main": "gulpfile.js",
+  "authors": [
+    "Herop <thesecon@gmail.com>"
+  ],
+  "license": "ISC",
+  "homepage": "https://github.com/ParkYoungWoong/",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "modernizr": "2.8.3",
+    "jquery": "1.12.4",
+    "jquery.easing": "^1.3.1",
+    "jquery.nicescroll": "nicescroll#^3.6.8",
+    "bxslider-4": "^4.2.5",
+    "gsap": "^1.19.0",
+    "prefixfree": "*",
+    "respond": "^1.4.2"
+  }
+}
