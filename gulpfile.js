@@ -7,9 +7,11 @@ var src = '',
         img: src + 'img/**',
         favicon: [src + 'favicon.ico', src + 'favicon.png'],
         html: [
-            src + 'index.html'
+            src + 'index.html',
+            src + 'sub*.html'
         ],
         css: [
+            src + 'css/reset.css',
             src + 'css/main.css'
         ],
         scss: [
