@@ -1,3 +1,12 @@
+class Random {
+    result(min, max, integer) {
+        let int = integer || false;
+        return int
+            ? Math.floor(Math.random() * (max - min + 1)) + min
+            : Math.random() * (max - min) + min;
+    }
+}
+
 class Herop {
     constructor() {
         this._lockScroll = false;
@@ -10,6 +19,7 @@ class Herop {
         this.sec = [];
         this.secPos = [];
         this.slider = {};
+        this.random = new Random().result;
 
         this._initEvent();
     }
@@ -172,10 +182,10 @@ class Herop {
             let tween = new TimelineMax({ repeat: -1 });
             let $o = $('.selector');
             tween
-                .set($o.find('img'), {width: 35, marginTop: 20, marginLeft: 20})
-                .set($o, {opacity: 0})
-                .to($o.find('img'), 1, {width: 55, marginTop: 6, marginLeft: 6, ease: Power0.easeNone}, '-=1')
-                .from($o, 1, {top: 170, left: 215, ease: Power0.easeNone});
+                .set($o.find('img'), { width: 35, marginTop: 20, marginLeft: 20 })
+                .set($o, { opacity: 0 })
+                .to($o.find('img'), 1, { width: 55, marginTop: 6, marginLeft: 6, ease: Power0.easeNone }, '-=1')
+                .from($o, 1, { top: 170, left: 215, ease: Power0.easeNone });
         }());
     }
 
