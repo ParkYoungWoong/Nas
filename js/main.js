@@ -7,16 +7,16 @@ class Random {
   }
 }
 
-class ThisToggleClass {
-  toggleClassHandler($this, sel, cName) {
+class ToggleFunction {
+  toggleClassHandler($this, sel, func) {
     let index = null;
 
     if (typeof $this === 'object') index = $this.index();
     else if (typeof $this === 'number') index = $this;
     else console.error('$this is not a normal value');
 
-    $(sel).not($(sel).eq(index)).removeClass(cName);
-    $(sel).eq(index).addClass(cName);
+    func.removeFunction($(sel).not($(sel).eq(index)));
+    func.addFunction($(sel).eq(index));
   }
 }
 
@@ -33,7 +33,7 @@ class Herop {
     this.secPos = [];
     this.slider = {};
     this.random = new Random().result;
-    this.toggleClass = new ThisToggleClass().toggleClassHandler;
+    this.toggleFunction = new ToggleFunction().toggleClassHandler;
 
     this._initEvent();
   }
