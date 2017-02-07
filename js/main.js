@@ -15,8 +15,8 @@ class ToggleFunction {
     else if (typeof $this === 'number') index = $this;
     else console.error('$this is not a normal value');
 
-    func.removeFunction($(sel).not($(sel).eq(index)));
-    func.addFunction($(sel).eq(index));
+    if (func.removeFunction) func.removeFunction($(sel).not($(sel).eq(index)));
+    if (func.addFunction) func.addFunction($(sel).eq(index));
   }
 }
 
