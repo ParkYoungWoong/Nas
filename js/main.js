@@ -9,7 +9,11 @@ class Random {
 
 class ThisToggleClass {
   toggleClassHandler($this, sel, cName) {
-    let index = $this.index();
+    let index = null;
+
+    if (typeof $this === 'object') index = $this.index();
+    else if (typeof $this === 'number') index = $this;
+    else console.error('$this is not a normal value');
 
     $(sel).not($(sel).eq(index)).removeClass(cName);
     $(sel).eq(index).addClass(cName);
