@@ -7,6 +7,15 @@ class Random {
   }
 }
 
+class ThisToggleClass {
+  toggleClassHandler($this, sel, cName) {
+    let index = $this.index();
+
+    $(sel).not($(sel).eq(index)).removeClass(cName);
+    $(sel).eq(index).addClass(cName);
+  }
+}
+
 class Herop {
   constructor() {
     this._lockScroll = false;
@@ -20,6 +29,7 @@ class Herop {
     this.secPos = [];
     this.slider = {};
     this.random = new Random().result;
+    this.toggleClass = new ThisToggleClass().toggleClassHandler;
 
     this._initEvent();
   }
