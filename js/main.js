@@ -11,12 +11,22 @@ class ToggleFunction {
   toggleClassHandler($this, sel, func) {
     let index = null;
 
-    if (typeof $this === 'object') index = $this.index();
-    else if (typeof $this === 'number') index = $this;
+    if ( typeof $this === 'object' ) index = $this.index();
+    else if ( typeof $this === 'number' ) index = $this;
     else console.error('$this is not a normal value');
 
-    if (func.removeFunction) func.removeFunction($(sel).not($(sel).eq(index)));
-    if (func.addFunction) func.addFunction($(sel).eq(index));
+    if ( typeof func === 'string' ) {
+      $(sel).not($(sel).eq(index)).removeClass(func);
+      $(sel).eq(index).addClass(func);
+
+    } else {
+      if ( func.removeFunction ) {
+        func.removeFunction($(sel).not($(sel).eq(index)));
+      }
+      if ( func.addFunction ) {
+        func.addFunction( $(sel).eq(index) );
+      }
+    }
   }
 }
 
