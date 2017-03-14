@@ -18,14 +18,15 @@ class ToggleFunction {
     if ( typeof func === 'string' ) {
       $(sel).not($(sel).eq(index)).removeClass(func);
       $(sel).eq(index).addClass(func);
-
-    } else {
+    } else if ( typeof func === 'object' ) {
       if ( func.removeFunction ) {
         func.removeFunction($(sel).not($(sel).eq(index)));
       }
       if ( func.addFunction ) {
         func.addFunction( $(sel).eq(index) );
       }
+    } else {
+      console.error('This is the wrong data type. Use String or Object.');
     }
   }
 }
