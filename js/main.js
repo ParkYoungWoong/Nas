@@ -85,14 +85,14 @@ class Herop {
     });
   }
 
-  createSectionArray(callback) {
+  _createSectionArray(callback) {
     for (let i = 0; i < this.numberOfSection; i++) {
       this.sec.push('#sec' + (i+1));
     }
     callback(this, this.sec);
   }
 
-  offsetOfEachSection(_this, section) {
+  _offsetOfEachSection(_this, section) {
     if (_this.findingSection) {
       let _that = _this;
       let _result = null;
@@ -116,7 +116,7 @@ class Herop {
     }
   }
 
-  addWindowLoadEvent(func) {  // 중복 로드(load) 처리
+  _addWindowLoadEvent(func) {  // 중복 로드(load) 처리
     let oldonload = window.onload;
     if (typeof window.onload != 'function') {
       if (document.all && !document.querySelector) {
@@ -138,14 +138,30 @@ class Herop {
     let _this = this;
 
     // $(window).load({ ...
-    this.addWindowLoadEvent(function () {
-      _this.createSectionArray(_this.offsetOfEachSection);
+    this._addWindowLoadEvent(function () {
+      _this._createSectionArray(_this._offsetOfEachSection);
       console.info('WINDOW LOADING COMPLETED');
+
     });
   }
 
   scrollEvent() {
     console.log('CURRENT SCROLL: ' + this.scrollLocate);
+
+  }
+
+  useParallax($ele, ratio, func) {
+    let offsetTop = $ele.offset().top;
+    let scrollValue = null;
+
+    if (this.scrollLocate < offsetTop) scrollValue = this.scrollLocate;
+    else scrollValue = offsetTop;
+
+    for (let i = 0; i < $ele.length; i++) {
+      let targetPos = (offsetTop - scrollValue) * ratio[i];
+      func($ele, i);
+      // this.$box.eq(i).attr('style', 'transform:translateY(' + targetPos + 'px)');
+    }
   }
 
   niceScroll() {
