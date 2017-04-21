@@ -65,6 +65,8 @@ class Herop {
   }
 
   _imagesPreload() {
+    // img 폴더로 이동
+    // dir /b >list.txt
     let images = ``;
     let imagesArr = images.split('\n');
     let url = '';
@@ -181,12 +183,12 @@ class Herop {
 
   imagePreload() {
     let _this = this;
-    
+
     $('body').imagesLoaded()
       .always( function( instance ) {
         console.log('all images loaded');
         $("#progress_bar").fadeOut(500);
-        $(".container").animate({ opacity: 1 }, 500, function () {
+        $("#container").animate({ opacity: 1 }, 500, function () {
           // $('body').css({ background: 'black' });
         });
       })
