@@ -3,6 +3,8 @@
 ## Call the JavaScript
 
 ```html
+<link rel="stylesheet" href="css/mainJS.css">
+
 <!--[if lt ie 9]>
     <script src="js/lib/respond.min.js"></script>
 <![endif]-->

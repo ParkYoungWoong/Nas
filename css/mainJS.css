@@ -1,0 +1,19 @@
+.container {
+    opacity: 0;
+}
+#all_images {
+    position: absolute;
+    width: 0;
+    height: 0;
+    overflow: hidden;
+    z-index: -1;
+}
+#progress_bar {
+    background: #BB162B;
+    width: 0;
+    height: 5px;
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 99999;
+}

@@ -182,6 +182,10 @@ class Herop {
     $('body').imagesLoaded()
       .always( function( instance ) {
         console.log('all images loaded');
+        $("#progress_bar").fadeOut(500);
+        $(".container").animate({ opacity: 1 }, 500, function () {
+          // $('body').css({ background: 'black' });
+        });
       })
       .done( function( instance ) {
         console.log('all images successfully loaded');
@@ -191,8 +195,20 @@ class Herop {
       })
       .progress( function( instance, image ) {
         let result = image.isLoaded ? 'loaded' : 'broken';
-        console.log( 'image is ' + result + ' for ' + image.img.src );
+        if (result === 'broken') console.log( 'image is ' + result + ' for ' + image.img.src );
+        _this.imagesProgress(instance, image);
       });
+  }
+
+  imagesProgress(instance, image) {
+    this.loadedImg++;
+
+    let imgLength = instance.images.length;
+    let progressPosition = (this.loadedImg / imgLength) * 100;
+
+    $('#progress_bar').css({
+      width: progressPosition + '%'
+    });
   }
 
   niceScroll() {
