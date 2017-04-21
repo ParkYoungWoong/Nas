@@ -66,7 +66,7 @@ class Herop {
 
   _imagesPreload() {
     // img 폴더로 이동
-    // dir /b >list.txt
+    // dir /b/s >list.txt
     let images = ``;
     let imagesArr = images.split('\n');
     let url = '';
