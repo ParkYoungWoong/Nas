@@ -51,6 +51,7 @@ class Herop {
 
   // EVENT
   _initEvent() {
+    this._imagesPreload();
     this._scroll();
     this._plugins();
     this.windowLoad();  // window load!
@@ -60,6 +61,18 @@ class Herop {
     this.niceScroll();
     this.bxSlider();
     this.tweenMax();
+  }
+
+  _imagesPreload() {
+    let images = ``;
+    let imagesArr = images.split('\n');
+    let url = '';
+
+    for (let i = 0; i < imagesArr.length; i++) {
+      if (i >= imagesArr.length - 1) url = url.concat('url("img/' + imagesArr[i] + '");');
+      else url = url.concat('url("img/' + imagesArr[i] + '"),');
+    }
+    $("#all_images").attr('style', 'background: ' + url);
   }
 
   _throttleScroll() {
