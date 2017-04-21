@@ -180,6 +180,8 @@ class Herop {
   }
 
   imagePreload() {
+    let _this = this;
+    
     $('body').imagesLoaded()
       .always( function( instance ) {
         console.log('all images loaded');
