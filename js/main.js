@@ -45,6 +45,7 @@ class Herop {
     this.slider = {};
     this.random = new Random().result;
     this.toggleFunction = new ToggleFunction().toggleClassHandler;
+    this.loadedImg = 0;
 
     this._initEvent();
   }
