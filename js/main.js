@@ -153,6 +153,7 @@ class Herop {
     // $(window).load({ ...
     this._addWindowLoadEvent(function () {
       _this._createSectionArray(_this._offsetOfEachSection);
+      _this.imagePreload();
       console.info('WINDOW LOADING COMPLETED');
 
     });
@@ -175,6 +176,23 @@ class Herop {
       func($ele, i);
       // this.$box.eq(i).attr('style', 'transform:translateY(' + targetPos + 'px)');
     }
+  }
+
+  imagePreload() {
+    $('body').imagesLoaded()
+      .always( function( instance ) {
+        console.log('all images loaded');
+      })
+      .done( function( instance ) {
+        console.log('all images successfully loaded');
+      })
+      .fail( function() {
+        console.log('all images loaded, at least one is broken');
+      })
+      .progress( function( instance, image ) {
+        let result = image.isLoaded ? 'loaded' : 'broken';
+        console.log( 'image is ' + result + ' for ' + image.img.src );
+      });
   }
 
   niceScroll() {
