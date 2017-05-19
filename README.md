@@ -19,6 +19,7 @@
 <script src="js/plugins/jquery.nicescroll.min.js"></script>
 <script src="js/plugins/jquery.bxslider.min.js"></script>
 <script src="js/plugins/imagesloaded.pkgd.min.js"></script>
+<script src="js/plugins/rellax.min.js"></script>
 
 <script type="text/babel" src="js/main.js"></script>
 ```
