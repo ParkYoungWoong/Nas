@@ -8,24 +8,31 @@ class Random {
 }
 
 class ToggleFunction {
-  toggleClassHandler($this, sel, func) {
+  toggleClassHandler($thisOrIndex, selector, functionOrClass) {
     let index = null;
 
-    if ( typeof $this === 'object' ) index = $this.index();
-    else if ( typeof $this === 'number' ) index = $this;
+    if ( typeof $thisOrIndex === 'object' ) index = $thisOrIndex.index();
+    else if ( typeof $thisOrIndex === 'number' ) index = $thisOrIndex;
     else console.error('$this is not a normal value');
 
-    if ( typeof func === 'string' ) {
-      $(sel).not($(sel).eq(index)).removeClass(func);
-      $(sel).eq(index).addClass(func);
-    } else if ( typeof func === 'object' ) {
-      if ( func.removeFunction ) {
-        func.removeFunction($(sel).not($(sel).eq(index)));
+    // Add class
+    if ( typeof functionOrClass === 'string' ) {
+      $(selector).not($(selector).eq(index)).removeClass(functionOrClass);
+      $(selector).eq(index).addClass(functionOrClass);
+    }
+
+    // Add function
+    else if ( typeof functionOrClass === 'object' ) {
+      if ( functionOrClass.removeFunction ) {
+        functionOrClass.removeFunction($(selector).not($(selector).eq(index)));
       }
-      if ( func.addFunction ) {
-        func.addFunction( $(sel).eq(index) );
+      if ( functionOrClass.addFunction ) {
+        functionOrClass.addFunction( $(selector).eq(index) );
       }
-    } else {
+    }
+
+    // Error message
+    else {
       console.error('This is the wrong data type. Use String or Object.');
     }
   }
@@ -39,13 +46,16 @@ class Herop {
     this.scrollLocate = 0;
     this.findingSection = true;  // 섹션 위치 파악: Boolean
     this.scrollDirection = 'top';  // 스크롤 방향: String ['top', 'left']
-    this.numberOfSection = 5;  // 섹션의 개수: Number, 각 섹션의 ID 를 `sec$` 로 설정하세요!
     this.sec = [];
     this.secPos = [];
     this.slider = {};
     this.random = new Random().result;
     this.toggleFunction = new ToggleFunction().toggleClassHandler;
     this.loadedImg = 0;
+    this.plugin = {};
+    this.oldSection = 0;
+    this.currentSection = 0;
+
 
     this._initEvent();
   }
@@ -55,19 +65,72 @@ class Herop {
     this._imagesPreload();
     this._scroll();
     this._plugins();
-    this.windowLoad();  // window load!
+    this._windowLoad();  // window load!
   }
 
   _plugins() {
-    this.niceScroll();
-    this.bxSlider();
-    this.tweenMax();
+    let _this = this;
+
+    // NICE SCROLL: https://github.com/inuyaksa/jquery.nicescroll
+    (function () {
+      _this.$scrollBody.niceScroll({
+        cursorcolor: "black",
+        cursorwidth: 10,
+        scrollspeed: 60,
+        cursorborderradius: 0,
+        mousescrollstep: 40,
+        background: "none",
+        cursorborder: "none",
+        autohidemode: true,
+        boxzoom: false,
+        zindex: 990
+      });
+    }());
+
+    // BX SLIDER: http://bxslider.com/options
+    (function () {
+
+      _this.slider.s1 = $('selector').bxSlider({
+        mode: 'horizontal', // 슬라이드 종류
+        speed: 500, // 슬라이드 속도
+        slideMargin: 0, // 슬라이드 사이 여백
+        pager: true, // 페이지 번호
+        pagerSelector: '', // 페이지 번호 선택자
+        controls: false, // 이전/다음
+        autoControls: false, // 시작/정지
+        auto: true, // 자동 슬라이드
+        pause: 4000, // 자동 슬라이드 시간
+        minSlides: 1, // 최소 슬라이드 갯수
+        maxSlides: 1, // 최대 슬라이드 갯수
+        moveSlides: 0, // 한번에 움직일 슬라이드의 갯수
+        slideWidth: 0, // 슬라이드 가로 너비
+        onSliderLoad: function (currentIndex) {
+        }, // 슬라이드 준비되면
+        onSlideBefore: function ($slideElement, oldIndex, newIndex) {
+        }, // 슬라이드 전환 직전
+        onSlideAfter: function ($slideElement, oldIndex, newIndex) {
+        } // 슬라이드 전환 직후
+      });
+    }());
+
+    // TWEEN MAX: https://greensock.com/docs/#/HTML5/GSAP/
+    (function () {
+      _this.tweenAnimation();
+      _this.timeLineAnimation();
+    }());
+
+    // RELLAX: https://github.com/dixonandmoe/rellax
+    (function () {
+      // let rellax = new Rellax('.rellax');
+      // data-rellax-percentage="0.5"
+      // data-rellax-speed="7"
+    }());
   }
 
   _imagesPreload() {
     // img 폴더로 이동
-    // dir /b/s >list.txt
-    let images = ``;
+    // dir /b >list.txt
+    let images = ``; // Add here!
     let imagesArr = images.split('\n');
     let url = '';
 
@@ -102,8 +165,10 @@ class Herop {
   }
 
   _createSectionArray(callback) {
-    for (let i = 0; i < this.numberOfSection; i++) {
-      this.sec.push('#sec' + (i+1));
+    let length = $('section').length;
+
+    for (let i = 0; i < length; i++) {
+      this.sec.push('.sec' + (i+1));
     }
     callback(this, this.sec);
   }
@@ -150,62 +215,7 @@ class Herop {
     }
   }
 
-  windowLoad() {
-    let _this = this;
-
-    // $(window).load({ ...
-    this._addWindowLoadEvent(function () {
-      _this._createSectionArray(_this._offsetOfEachSection);
-      _this.imagePreload();
-      console.info('WINDOW LOADING COMPLETED');
-
-    });
-  }
-
-  scrollEvent() {
-    console.log('CURRENT SCROLL: ' + this.scrollLocate);
-
-  }
-
-  useParallax($ele, ratio, func) {
-    let offsetTop = $ele.offset().top;
-    let scrollValue = null;
-
-    if (this.scrollLocate < offsetTop) scrollValue = this.scrollLocate;
-    else scrollValue = offsetTop;
-
-    for (let i = 0; i < $ele.length; i++) {
-      let targetPos = (offsetTop - scrollValue) * ratio[i];
-      func($ele, i);
-      // this.$box.eq(i).attr('style', 'transform:translateY(' + targetPos + 'px)');
-    }
-  }
-
-  imagePreload() {
-    let _this = this;
-
-    $('body').imagesLoaded()
-      .always( function( instance ) {
-        console.log('all images loaded');
-        $("#progress_bar").fadeOut(500);
-        $("#container").animate({ opacity: 1 }, 500, function () {
-          // $('body').css({ background: 'black' });
-        });
-      })
-      .done( function( instance ) {
-        console.log('all images successfully loaded');
-      })
-      .fail( function() {
-        console.log('all images loaded, at least one is broken');
-      })
-      .progress( function( instance, image ) {
-        let result = image.isLoaded ? 'loaded' : 'broken';
-        if (result === 'broken') console.log( 'image is ' + result + ' for ' + image.img.src );
-        _this.imagesProgress(instance, image);
-      });
-  }
-
-  imagesProgress(instance, image) {
+  _imagesProgress(instance, image) {
     this.loadedImg++;
 
     let imgLength = instance.images.length;
@@ -216,57 +226,73 @@ class Herop {
     });
   }
 
-  niceScroll() {
-    // Options: https://github.com/inuyaksa/jquery.nicescroll
-    this.$scrollBody.niceScroll({
-      cursorcolor: "black",
-      cursorwidth: 10,
-      scrollspeed: 60,
-      cursorborderradius: 0,
-      mousescrollstep: 40,
-      background: "none",
-      cursorborder: "none",
-      autohidemode: true,
-      boxzoom: false,
-      zindex: 990
-    });
-  }
-
-  bxSlider() {
+  _windowLoad() {
     let _this = this;
 
-    // Options: http://bxslider.com/options
-    this.slider.s1 = $('selector').bxSlider({
-      mode: 'horizontal', // 슬라이드 종류
-      speed: 500, // 슬라이드 속도
-      slideMargin: 0, // 슬라이드 사이 여백
-      pager: true, // 페이지 번호
-      pagerSelector: '', // 페이지 번호 선택자
-      controls: false, // 이전/다음
-      autoControls: false, // 시작/정지
-      auto: true, // 자동 슬라이드
-      pause: 4000, // 자동 슬라이드 시간
-      minSlides: 1, // 최소 슬라이드 갯수
-      maxSlides: 1, // 최대 슬라이드 갯수
-      moveSlides: 0, // 한번에 움직일 슬라이드의 갯수
-      slideWidth: 0, // 슬라이드 가로 너비
-      onSliderLoad: function (currentIndex) {
-      }, // 슬라이드 준비되면
-      onSlideBefore: function ($slideElement, oldIndex, newIndex) {
-      }, // 슬라이드 전환 직전
-      onSlideAfter: function ($slideElement, oldIndex, newIndex) {
-      } // 슬라이드 전환 직후
+    // $(window).load({ ...
+    this._addWindowLoadEvent(function () {
+
+      // IMAGE PRELOAD: https://github.com/desandro/imagesloaded
+      (function () {
+        let _this = this;
+
+        $('body').imagesLoaded()
+          .always(function (instance) {
+            console.log('all images loaded');
+            $("#progress_bar").fadeOut(500);
+            $("#container").animate({opacity: 1}, 500, function () {
+              // $('body').css({ background: 'black' });
+            });
+          })
+          .done(function (instance) {
+            console.log('all images successfully loaded');
+          })
+          .fail(function () {
+            console.log('all images loaded, at least one is broken');
+          })
+          .progress(function (instance, image) {
+            let result = image.isLoaded ? 'loaded' : 'broken';
+            if (result === 'broken') console.log('image is ' + result + ' for ' + image.img.src);
+            _this._imagesProgress(instance, image);
+          });
+      }());
+
+      _this._createSectionArray(_this._offsetOfEachSection);
+      _this.onLoad();
     });
   }
 
-  tweenMax() {
-    // Documentation: https://greensock.com/docs/#/HTML5/GSAP/
-    this.tweenAnimation();
-    this.timeLineAnimation();
+  _checkCurrentSection() {
+    for (let prop in this.secPos) {
+      let index = parseInt(prop);
+
+      if (this.scrollLocate >= this.secPos[index] && this.scrollLocate < this.secPos[index + 1]) {
+        this._renewCurrentSection(index);
+      }
+    }
   }
 
-  tweenAnimation() {
-    TweenMax.to($('.selector'), 2, { marginTop: 20, yoyo: true, repeat: -1, ease: Power1.easeInOut });
+  _renewCurrentSection(index) {
+    if (this.currentSection !== index) {
+      this.oldSection = this.currentSection;
+      this.currentSection = index;
+      this.whenSectionChange(this.oldSection, this.currentSection);
+    }
+  }
+
+  onLoad() {
+    console.info('WINDOW LOADING COMPLETED');
+
+  }
+
+  scrollEvent() {
+    this._checkCurrentSection();
+    console.log('CURRENT SCROLL: ' + this.scrollLocate);
+
+  }
+
+  whenSectionChange(oldIndex, newIndex) {
+
   }
 
   timeLineAnimation() {
@@ -280,6 +306,10 @@ class Herop {
         .to($o.find('img'), 1, { width: 55, marginTop: 6, marginLeft: 6, ease: Power0.easeNone }, '-=1')
         .from($o, 1, { top: 170, left: 215, ease: Power0.easeNone });
     }());
+  }
+
+  tweenAnimation() {
+    TweenMax.to($('.selector'), 2, { marginTop: 20, yoyo: true, repeat: -1, ease: Power1.easeInOut });
   }
 
 }
