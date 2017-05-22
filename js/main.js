@@ -233,29 +233,25 @@ class Herop {
     this._addWindowLoadEvent(function () {
 
       // IMAGE PRELOAD: https://github.com/desandro/imagesloaded
-      (function () {
-        let _this = this;
-
-        $('body').imagesLoaded()
-          .always(function (instance) {
-            console.log('all images loaded');
-            $("#progress_bar").fadeOut(500);
-            $("#container").animate({opacity: 1}, 500, function () {
-              // $('body').css({ background: 'black' });
-            });
-          })
-          .done(function (instance) {
-            console.log('all images successfully loaded');
-          })
-          .fail(function () {
-            console.log('all images loaded, at least one is broken');
-          })
-          .progress(function (instance, image) {
-            let result = image.isLoaded ? 'loaded' : 'broken';
-            if (result === 'broken') console.log('image is ' + result + ' for ' + image.img.src);
-            _this._imagesProgress(instance, image);
+      $('body').imagesLoaded()
+        .always(function (instance) {
+          console.log('all images loaded');
+          $("#progress_bar").fadeOut(500);
+          $("#container").animate({opacity: 1}, 500, function () {
+            // $('body').css({ background: 'black' });
           });
-      }());
+        })
+        .done(function (instance) {
+          console.log('all images successfully loaded');
+        })
+        .fail(function () {
+          console.log('all images loaded, at least one is broken');
+        })
+        .progress(function (instance, image) {
+          let result = image.isLoaded ? 'loaded' : 'broken';
+          if (result === 'broken') console.log('image is ' + result + ' for ' + image.img.src);
+          _this._imagesProgress(instance, image);
+        });
 
       _this._createSectionArray(_this._offsetOfEachSection);
       _this.onLoad();
