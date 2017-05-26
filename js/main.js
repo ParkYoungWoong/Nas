@@ -4,8 +4,8 @@ class Random {
   result(min, max, integer) {
     let int = integer || false;
     return int
-      ? Math.floor(Math.random() * (max - min + 1)) + min
-      : Math.random() * (max - min) + min;
+      ? parseFloat((Math.floor(Math.random() * (max - min + 1)) + min).toFixed(2)) // INTEGER
+      : parseFloat((Math.random() * (max - min) + min).toFixed(2));
   }
 }
 
