@@ -25,10 +25,10 @@ class ToggleFunction {
 
     // Add function
     else if ( typeof functionOrClass === 'object' ) {
-      if ( functionOrClass.removeFunction ) {
-        functionOrClass.removeFunction($(selector).not($(selector).eq(index)));
+      if ( functionOrClass.removeFunction ) {  // removeFunction: function ($target) { }
+        functionOrClass.removeFunction( $(selector).not($(selector).eq(index)) );
       }
-      if ( functionOrClass.addFunction ) {
+      if ( functionOrClass.addFunction ) {  // addFunction: function ($target) { }
         functionOrClass.addFunction( $(selector).eq(index) );
       }
     }
