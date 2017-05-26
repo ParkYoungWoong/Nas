@@ -1,3 +1,5 @@
+let _this = null;
+
 class Random {
   result(min, max, integer) {
     let int = integer || false;
@@ -40,6 +42,9 @@ class ToggleFunction {
 
 class Herop {
   constructor() {
+
+    _this = this;
+
     this._lockScroll = false;
     this.throttleDuration = 200;  // 스크롤 파악 속도: Number
     this.$scrollBody = $('html');  // 스크롤 선택자: String
@@ -69,8 +74,6 @@ class Herop {
   }
 
   _plugins() {
-    let _this = this;
-
     // NICE SCROLL: https://github.com/inuyaksa/jquery.nicescroll
     (function () {
       _this.$scrollBody.niceScroll({
@@ -142,8 +145,6 @@ class Herop {
   }
 
   _throttleScroll() {
-    let _this = this;
-
     setInterval(function () {
       if (_this._lockScroll) {
         _this._lockScroll = false;
@@ -156,7 +157,6 @@ class Herop {
     this._throttleScroll();
 
     let scrollBody = this.$scrollBody.selector === 'html' ? $(document) : this.$scrollBody;
-    let _this = this;
 
     scrollBody.on('scroll', function () {
       _this._lockScroll = true;
@@ -227,8 +227,6 @@ class Herop {
   }
 
   _windowLoad() {
-    let _this = this;
-
     // $(window).load({ ...
     this._addWindowLoadEvent(function () {
 
@@ -288,6 +286,7 @@ class Herop {
   }
 
   whenSectionChange(oldIndex, newIndex) {
+    console.log('Section change - OLDSEC: ' + oldIndex, 'NEWSEC: ' + newIndex);
 
   }
 
