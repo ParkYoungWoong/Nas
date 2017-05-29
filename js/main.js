@@ -60,8 +60,8 @@ class Herop {
     this.plugin = {};
     this.oldSection = 0;
     this.currentSection = 0;
-    this.winHeight = $(window).height();
-    this.checkSectionPositioning = this.winHeight / 2;
+    this.winSize = this.scrollDirection === 'top' ? $(window).height() : $(window).width();
+    this.checkSectionPositioning = this.winSize / 2;
 
     this._initEvent();
   }
@@ -72,6 +72,7 @@ class Herop {
     this._scroll();
     this._plugins();
     this._windowLoad();  // window load!
+    this._resizeWindow();
   }
 
   _plugins() {
@@ -275,6 +276,13 @@ class Herop {
       this.currentSection = index;
       this.whenSectionChange(this.oldSection, this.currentSection);
     }
+  }
+
+  _resizeWindow() {
+    $(window).on('resize', function () {
+      _this.winSize = _this.scrollDirection === 'top' ? $(this).height() : $(this).width();
+      _this.checkSectionPositioning = _this.winSize / 2;
+    });
   }
 
   onLoad() {
