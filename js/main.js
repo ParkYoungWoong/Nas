@@ -60,7 +60,8 @@ class Herop {
     this.plugin = {};
     this.oldSection = 0;
     this.currentSection = 0;
-
+    this.winHeight = $(window).height();
+    this.checkSectionPositioning = this.winHeight / 2;
 
     this._initEvent();
   }
@@ -260,7 +261,9 @@ class Herop {
     for (let prop in this.secPos) {
       let index = parseInt(prop);
 
-      if (this.scrollLocate >= this.secPos[index] && this.scrollLocate < this.secPos[index + 1]) {
+      if (this.scrollLocate + this.checkSectionPositioning >= this.secPos[index] && this.scrollLocate + this.checkSectionPositioning < this.secPos[index + 1]) {
+        this._renewCurrentSection(index);
+      } else if (this.scrollLocate + this.checkSectionPositioning >= this.secPos[index] && this.secPos[index + 1] === undefined) {
         this._renewCurrentSection(index);
       }
     }
