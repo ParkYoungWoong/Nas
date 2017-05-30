@@ -76,21 +76,7 @@ class Herop {
   }
 
   _plugins() {
-    // NICE SCROLL: https://github.com/inuyaksa/jquery.nicescroll
-    (function () {
-      _this.$scrollBody.niceScroll({
-        cursorcolor: "black",
-        cursorwidth: 10,
-        scrollspeed: 60,
-        cursorborderradius: 0,
-        mousescrollstep: 40,
-        background: "none",
-        cursorborder: "none",
-        autohidemode: true,
-        boxzoom: false,
-        zindex: 990
-      });
-    }());
+    this.callNiceScroll();
 
     // BX SLIDER: http://bxslider.com/options
     (function () {
@@ -283,6 +269,27 @@ class Herop {
       _this.winSize = _this.scrollDirection === 'top' ? $(this).height() : $(this).width();
       _this.checkSectionPositioning = _this.winSize / 2;
     });
+  }
+
+  callNiceScroll() {
+    // NICE SCROLL: https://github.com/inuyaksa/jquery.nicescroll
+    this.$scrollBody.niceScroll({
+      cursorcolor: "black",
+      cursorwidth: 10,
+      scrollspeed: 60,
+      cursorborderradius: 0,
+      mousescrollstep: 40,
+      background: "none",
+      cursorborder: "none",
+      autohidemode: true,
+      boxzoom: false,
+      zindex: 990
+    });
+  }
+
+  lockNiceScroll() {
+    this.$scrollBody.getNiceScroll().remove();
+    this.$scrollBody.css({ overflow: 'hidden' });
   }
 
   onLoad() {
