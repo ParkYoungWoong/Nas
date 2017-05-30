@@ -46,6 +46,7 @@ class Herop {
     _this = this;
 
     this._lockScroll = false;
+    this.lockDragAndSelect = false;  // 드래그 앤 선택 기능 잠금: Boolean (true: 잠금, false: 해제)
     this.throttleDuration = 200;  // 스크롤 파악 속도: Number
     this.$scrollBody = $('html');  // 스크롤 선택자: String
     this.scrollLocate = 0;
@@ -68,6 +69,7 @@ class Herop {
 
   // EVENT
   _initEvent() {
+    this._lockDragAndSelect();
     this._imagesPreload();
     this._scroll();
     this._plugins();
@@ -116,6 +118,15 @@ class Herop {
       // data-rellax-percentage="0.5"
       // data-rellax-speed="7"
     }());
+  }
+
+  _lockDragAndSelect() {
+    if (!this.lockDragAndSelect) return;
+
+    $('body').on({
+      selectstart: function () { return false; },
+      dragstart: function () { return false; }
+    });
   }
 
   _imagesPreload() {
