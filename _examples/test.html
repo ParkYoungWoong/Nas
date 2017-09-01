@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+    <title>SCROLL</title>
+
+    <meta charset="UTF-8"/>
+
+    <link rel="stylesheet" href="css/reset.css"/>
+    <link rel="stylesheet" href="css/scroll.css"/>
+    <link rel="stylesheet" href="../css/mainJS.css">
+
+    <!--[if lt ie 9]>
+    <script src="../js/lib/respond.min.js"></script>
+    <![endif]-->
+
+    <script src="../js/lib/jquery.min.js"></script>
+    <script src="../js/lib/jquery.easing.min.js"></script>
+    <script src="../js/lib/modernizr.js"></script>
+    <script src="../js/lib/browser.min.js"></script>
+
+    <script src="../js/plugins/prefixfree.min.js"></script>
+    <script src="../js/plugins/TweenMax.min.js"></script>
+    <script src="../js/plugins/jquery.nicescroll.min.js"></script>
+    <script src="../js/plugins/jquery.bxslider.min.js"></script>
+    <script src="../js/plugins/imagesloaded.pkgd.min.js"></script>
+    <script src="../js/plugins/rellax.min.js"></script>
+
+    <script src="../js/plugins/jquery.heropy.js"></script>
+    <script src="../js/test.js"></script>
+
+</head>
+<body>
+
+<ul class="target">
+    <li>001</li>
+    <li>002</li>
+    <li>003</li>
+    <li>004</li>
+    <li class="target">005</li>
+    <li class="target">006</li>
+    <li>007</li>
+    <li>008</li>
+    <li>009</li>
+    <li>010</li>
+</ul>
+
+<ul class="pager">
+    <li>1</li>
+    <li>2</li>
+    <li>3</li>
+    <li>4</li>
+    <li>5</li>
+    <li>6</li>
+    <li>7</li>
+    <li>8</li>
+    <li>9</li>
+    <li>10</li>
+</ul>
+
+<div class="section"></div>
+<div class="section"></div>
+<div class="section"></div>
+<div class="section"></div>
+<div class="section"></div>
+
+<style>
+    body {
+        height: 5000px;
+    }
+    .section {
+        height: 500px;
+    }
+    .pager {
+        margin: 10px;
+    }
+    .pager li {
+        display: inline;
+        margin-right: 10px;
+        cursor: pointer;
+    }
+    .active {
+        color: red;
+    }
+</style>
+
+<script>
+    HEROPY.init({
+
+    });
+
+    $('.target li').on('click', function () {
+      HEROPY.stopNiceScroll();
+    });
+
+    $('.pager li').on('click', function () {
+      var index = $(this).index();
+
+      HEROPY.toggle()
+        .insertIndex(index, '.target li')
+        .toggleClass('active');
+
+      console.log(HEROPY.random(1,10));
+      console.log(HEROPY.random(2,50));
+      HEROPY.startNiceScroll();
+    });
+</script>
+
+</body>
+</html>

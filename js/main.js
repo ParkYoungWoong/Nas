@@ -1,64 +1,32 @@
 let _this = null;
 
-class Random {
-  result(min, max, integer) {
-    let int = integer || false;
-    return int
-      ? parseFloat((Math.floor(Math.random() * (max - min + 1)) + min).toFixed(2)) // INTEGER
-      : parseFloat((Math.random() * (max - min) + min).toFixed(2));
-  }
-}
-
-class ToggleFunction {
-  toggleClassHandler($thisOrIndex, selector, functionOrClass) {
-    let index = null;
-
-    if ( typeof $thisOrIndex === 'object' ) index = $thisOrIndex.index();
-    else if ( typeof $thisOrIndex === 'number' ) index = $thisOrIndex;
-    else console.error('$this is not a normal value');
-
-    // Add class
-    if ( typeof functionOrClass === 'string' ) {
-      $(selector).not($(selector).eq(index)).removeClass(functionOrClass);
-      $(selector).eq(index).addClass(functionOrClass);
-    }
-
-    // Add function
-    else if ( typeof functionOrClass === 'object' ) {
-      if ( functionOrClass.removeFunction ) {  // removeFunction: function ($target) { }
-        functionOrClass.removeFunction( $(selector).not($(selector).eq(index)) );
-      }
-      if ( functionOrClass.addFunction ) {  // addFunction: function ($target) { }
-        functionOrClass.addFunction( $(selector).eq(index) );
-      }
-    }
-
-    // Error message
-    else {
-      console.error('This is the wrong data type. Use String or Object.');
-    }
-  }
-}
+// class Random {
+//   result(min, max, integer) {
+//     let int = integer || false;
+//     return int
+//       ? parseFloat((Math.floor(Math.random() * (max - min + 1)) + min).toFixed(2)) // INTEGER
+//       : parseFloat((Math.random() * (max - min) + min).toFixed(2));
+//   }
+// }
 
 class Herop {
   constructor() {
 
     _this = this;
 
-    this._lockScroll = false;
-    this.lockDragAndSelect = false;  // 드래그 앤 선택 기능 잠금: Boolean (true: 잠금, false: 해제)
-    this.throttleDuration = 200;  // 스크롤 파악 속도: Number
-    this.$scrollBody = $('html');  // 스크롤 선택자: String
-    this.scrollLocate = 0;
+    // this._lockScroll = false;
+    // this.lockDragAndSelect = false;  // 드래그 앤 선택 기능 잠금: Boolean (true: 잠금, false: 해제)
+    // this.throttleDuration = 200;  // 스크롤 파악 속도: Number
+    // this.$scrollBody = $('html');  // 스크롤 선택자: String
+    // this.scrollLocate = 0;
     this.findingSection = true;  // 섹션 위치 파악: Boolean
     this.scrollDirection = 'top';  // 스크롤 방향: String ['top', 'left']
     this.sec = [];
     this.secPos = [];
-    this.slider = {};
-    this.random = new Random().result;
-    this.toggleFunction = new ToggleFunction().toggleClassHandler;
+    // this.slider = {};
+    // this.random = new Random().result;
     this.loadedImg = 0;
-    this.plugin = {};
+    // this.plugin = {};
     this.oldSection = 0;
     this.currentSection = 0;
     this.winSize = this.scrollDirection === 'top' ? $(window).height() : $(window).width();
@@ -69,11 +37,11 @@ class Herop {
 
   // EVENT
   _initEvent() {
-    this._lockDragAndSelect();
+    // this._lockDragAndSelect();
     this._imagesPreload();
-    this._scroll();
-    this._plugins();
-    this._windowLoad();  // window load!
+    // this._scroll();
+    // this._plugins();
+    // this._windowLoad();  // window load!
     this._resizeWindow();
   }
 
@@ -120,14 +88,14 @@ class Herop {
     }());
   }
 
-  _lockDragAndSelect() {
-    if (!this.lockDragAndSelect) return;
-
-    $('body').on({
-      selectstart: function () { return false; },
-      dragstart: function () { return false; }
-    });
-  }
+  // _lockDragAndSelect() {
+  //   if (!this.lockDragAndSelect) return;
+  //
+  //   $('body').on({
+  //     selectstart: function () { return false; },
+  //     dragstart: function () { return false; }
+  //   });
+  // }
 
   _imagesPreload() {
     // img 폴더로 이동
@@ -143,25 +111,25 @@ class Herop {
     $("#all_images").attr('style', 'background: ' + url);
   }
 
-  _throttleScroll() {
-    setInterval(function () {
-      if (_this._lockScroll) {
-        _this._lockScroll = false;
-        _this.scrollEvent();
-      }
-    }, this.throttleDuration);
-  }
-
-  _scroll() {
-    this._throttleScroll();
-
-    let scrollBody = this.$scrollBody.selector === 'html' ? $(document) : this.$scrollBody;
-
-    scrollBody.on('scroll', function () {
-      _this._lockScroll = true;
-      _this.scrollLocate = _this.scrollDirection === 'top' ? $(this).scrollTop() : $(this).scrollLeft();
-    });
-  }
+  // _throttleScroll() {
+  //   setInterval(function () {
+  //     if (_this._lockScroll) {
+  //       _this._lockScroll = false;
+  //       _this.scrollEvent();
+  //     }
+  //   }, this.throttleDuration);
+  // }
+  //
+  // _scroll() {
+  //   this._throttleScroll();
+  //
+  //   let scrollBody = this.$scrollBody.selector === 'html' ? $(document) : this.niceScrollBody;
+  //
+  //   scrollBody.on('scroll', function () {
+  //     _this._lockScroll = true;
+  //     _this.scrollLocate = _this.scrollDirection === 'top' ? $(this).scrollTop() : $(this).scrollLeft();
+  //   });
+  // }
 
   _createSectionArray(callback) {
     let length = $('section').length;
@@ -282,26 +250,26 @@ class Herop {
     });
   }
 
-  callNiceScroll() {
-    // NICE SCROLL: https://github.com/inuyaksa/jquery.nicescroll
-    this.$scrollBody.niceScroll({
-      cursorcolor: "black",
-      cursorwidth: 10,
-      scrollspeed: 60,
-      cursorborderradius: 0,
-      mousescrollstep: 40,
-      background: "none",
-      cursorborder: "none",
-      autohidemode: true,
-      boxzoom: false,
-      zindex: 990
-    });
-  }
-
-  lockNiceScroll() {
-    this.$scrollBody.getNiceScroll().remove();
-    this.$scrollBody.css({ overflow: 'hidden' });
-  }
+  // callNiceScroll() {
+  //   // NICE SCROLL: https://github.com/inuyaksa/jquery.nicescroll
+  //   this.$scrollBody.niceScroll({
+  //     cursorcolor: "black",
+  //     cursorwidth: 10,
+  //     scrollspeed: 60,
+  //     cursorborderradius: 0,
+  //     mousescrollstep: 40,
+  //     background: "none",
+  //     cursorborder: "none",
+  //     autohidemode: true,
+  //     boxzoom: false,
+  //     zindex: 990
+  //   });
+  // }
+  //
+  // lockNiceScroll() {
+  //   this.$scrollBody.getNiceScroll().remove();
+  //   this.$scrollBody.css({ overflow: 'hidden' });
+  // }
 
   onLoad() {
     console.info('WINDOW LOADING COMPLETED');
@@ -319,22 +287,22 @@ class Herop {
 
   }
 
-  timeLineAnimation() {
-    // animation 1
-    (function () {
-      let tween = new TimelineMax({ repeat: -1 });
-      let $o = $('.selector');
-      tween
-        .set($o.find('img'), { width: 35, marginTop: 20, marginLeft: 20 })
-        .set($o, { opacity: 0 })
-        .to($o.find('img'), 1, { width: 55, marginTop: 6, marginLeft: 6, ease: Power0.easeNone }, '-=1')
-        .from($o, 1, { top: 170, left: 215, ease: Power0.easeNone });
-    }());
-  }
-
-  tweenAnimation() {
-    TweenMax.to($('.selector'), 2, { marginTop: 20, yoyo: true, repeat: -1, ease: Power1.easeInOut });
-  }
+  // timeLineAnimation() {
+  //   // animation 1
+  //   (function () {
+  //     let tween = new TimelineMax({ repeat: -1 });
+  //     let $o = $('.selector');
+  //     tween
+  //       .set($o.find('img'), { width: 35, marginTop: 20, marginLeft: 20 })
+  //       .set($o, { opacity: 0 })
+  //       .to($o.find('img'), 1, { width: 55, marginTop: 6, marginLeft: 6, ease: Power0.easeNone }, '-=1')
+  //       .from($o, 1, { top: 170, left: 215, ease: Power0.easeNone });
+  //   }());
+  // }
+  //
+  // tweenAnimation() {
+  //   TweenMax.to($('.selector'), 2, { marginTop: 20, yoyo: true, repeat: -1, ease: Power1.easeInOut });
+  // }
 
 }
 

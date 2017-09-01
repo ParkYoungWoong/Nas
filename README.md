@@ -21,5 +21,8 @@
 <script src="js/plugins/imagesloaded.pkgd.min.js"></script>
 <script src="js/plugins/rellax.min.js"></script>
 
+<script src="js/plugins/random.js"></script>
+<script src="js/plugins/jquery.toggleFunction.js"></script>
+
 <script type="text/babel" src="js/main.js"></script>
 ```
