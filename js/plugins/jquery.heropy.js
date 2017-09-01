@@ -15,6 +15,7 @@ var HEROPY = (function (root, docs, $) {
     isNiceScroll: true,  // 전역 jQuery Nice Scroll Plugin 사용 여부
     niceScrollBody: 'html',  // 전역 jQuery Nice Scroll Plugin 으로 적용할 대상
     niceScrollOptions: {  // 전역 jQuery Nice Scroll Plugin 옵션
+      // NICE SCROLL: https://github.com/inuyaksa/jquery.nicescroll
       cursorcolor: "rgba(0,0,0,.75)",
       cursorwidth: 10,
       cursorborderradius: 0,
@@ -23,19 +24,15 @@ var HEROPY = (function (root, docs, $) {
     },
     lockSelectEvent: true,  // select 기능 사용 여부
     throttleDuration: 200,  // 스크롤 속도 제어
-    sectionSelector: '.section',
-    scrollDirection: 'vertical',
+    sectionSelector: '.section',  // 섹션들의 공통 선택자
+    scrollDirection: 'vertical',  // 스크롤 방향
+    windowSplitRatio: 1 / 2,  // 섹션 체크 기준 화면 비율 / 스크롤할 때 화면의 어느 '비율' 지점에서 섹션의 변경 이벤트를 체크할 지 여부
 
     // Methods
-    onLoad: function () {
-      console.info('WINDOW LOADING COMPLETED');
-      return false;
-    },
-    scrollEvent: function (scrollLocate) {
-      console.info('CURRENT SCROLL LOCATE: ' + scrollLocate);
-      return true;
-    },
-    whenSectionChange: function () { return true; }
+    onLoad: function () { return true; },  // 화면이 준비되었을 때
+    scrollEvent: function (scrollLocate) { return true; },  // 스크롤할 때
+    whenSectionChange: function (oldIndex, newIndex) { return true; },  // 화면의 중심 섹션이 변경될 때
+    resizeWindow: function (windowSize) { return true; }  // 화면의 크기가 변경될 때
   };
 
 
@@ -154,7 +151,7 @@ var HEROPY = (function (root, docs, $) {
       setInterval(function () {
         if (_lockScroll) {
           _lockScroll = false;
-          _optsAll.scrollEvent(scrollLocate);
+          _scrollEvent();
         }
       }, _optsAll.throttleDuration);
     }
@@ -180,6 +177,13 @@ var HEROPY = (function (root, docs, $) {
       });
     }
 
+    function _scrollEvent() {
+      console.info('CURRENT SCROLL LOCATE: ' + scrollLocate);
+
+      _optsAll.scrollEvent(scrollLocate);
+      Section._currentIndex(scrollLocate);
+    }
+
     return {
       _scroll: _scroll
     }
@@ -190,7 +194,7 @@ var HEROPY = (function (root, docs, $) {
   var OnLoad = (function () {
 
     function _addWindowLoadEvent(func) {  // 중복 로드(load) 처리
-      let oldOnload = root.onload;
+      var oldOnload = root.onload;
       if (typeof root.onload !== 'function') {
         if (docs.all && !docs.querySelector) {
           root.onload = func;
@@ -207,9 +211,17 @@ var HEROPY = (function (root, docs, $) {
 
     function _windowLoad() {
       _addWindowLoadEvent(function () {
-        _optsAll.onLoad();
-        Section._eachOffset();
+        _onLoad();
       });
+    }
+
+    function _onLoad() {
+      console.info('WINDOW LOADING COMPLETED');
+
+      _optsAll.onLoad();
+      Section._eachOffset();
+      Window._computedWindowSize();
+      $(root).on('resize', Window._resizeHandler);
     }
 
     return {
@@ -222,9 +234,14 @@ var HEROPY = (function (root, docs, $) {
   var Section = (function () {
 
     var secOffsetArray = [];
+    var oldSectionIndex = 0;
+    var currentSectionIndex = 0;
+    var prop = '';
+    var index = 0;
+    var computedScrollLocate = 0;
 
     function _offsetOfEachSection() {
-      $(_optsAll.sectionSelector).each(function (index) {
+      $(_optsAll.sectionSelector).each(function () {
         var result = null;
 
         switch (_optsAll.scrollDirection) {
@@ -242,8 +259,81 @@ var HEROPY = (function (root, docs, $) {
       console.info('EACH SECTION: ' + secOffsetArray);
     }
 
+    function _checkCurrentSection(scrollLocate) {
+      computedScrollLocate = scrollLocate + Window._sectionSplitRatio();
+      for (prop in secOffsetArray) {
+        index = parseInt(prop);
+
+        // 일반 섹션일 때..
+        if (computedScrollLocate >= secOffsetArray[index] && computedScrollLocate < secOffsetArray[index + 1]) {
+          _renewCurrentSection(index);
+
+        // 마지막 섹션일 때..
+        } else if (computedScrollLocate >= secOffsetArray[index] && secOffsetArray[index + 1] === undefined) {
+          _renewCurrentSection(index);
+        }
+      }
+    }
+
+    function _renewCurrentSection(index) {
+      if (currentSectionIndex !== index) {
+        oldSectionIndex = currentSectionIndex;
+        currentSectionIndex = index;
+        _whenSectionChange();
+      }
+    }
+
+    function _whenSectionChange() {
+      console.info('Section change - OLDSEC: ' + oldSectionIndex, 'NEWSEC: ' + currentSectionIndex);
+
+      _optsAll.whenSectionChange(oldSectionIndex, currentSectionIndex);
+    }
+
     return {
-      _eachOffset: _offsetOfEachSection
+      _eachOffset: _offsetOfEachSection,
+      _currentIndex: _checkCurrentSection,
+      _whenSectionChange: _whenSectionChange
+    }
+  }());
+
+
+  // CLASS WINDOW SIZE
+  var Window = (function () {
+
+    var windowSize = 0;
+    var sectionSplitRatio = 0;
+
+    function _computedWindowSize() {
+
+      switch (_optsAll.scrollDirection) {
+        case 'vertical':
+          windowSize = $(root).height();
+          break;
+        case 'horizontal':
+          windowSize = $(root).width();
+          break;
+      }
+
+      console.info('WINDOW SIZE: ' + windowSize);
+
+      _computedSectionSplitRatio();
+    }
+
+    function _computedSectionSplitRatio() {
+      return sectionSplitRatio = windowSize * _optsAll.windowSplitRatio;
+    }
+
+    function _resizeHandler() {
+      _computedWindowSize();
+      _computedSectionSplitRatio();
+      _optsAll.resizeWindow(windowSize);
+    }
+
+    return {
+      _windowSize: windowSize,
+      _sectionSplitRatio: _computedSectionSplitRatio,
+      _computedWindowSize: _computedWindowSize,
+      _resizeHandler: _resizeHandler
     }
   }());
 
@@ -296,7 +386,7 @@ var HEROPY = (function (root, docs, $) {
     toggle: new ToggleFunction().toggle,
     random: new Random().init,
     startNiceScroll: _startNiceScroll,
-    stopNiceScroll: _stopNiceScroll,
+    stopNiceScroll: _stopNiceScroll
   }
 
 }(window, document, jQuery));

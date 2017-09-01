@@ -19,18 +19,18 @@ class Herop {
     // this.throttleDuration = 200;  // 스크롤 파악 속도: Number
     // this.$scrollBody = $('html');  // 스크롤 선택자: String
     // this.scrollLocate = 0;
-    this.findingSection = true;  // 섹션 위치 파악: Boolean
-    this.scrollDirection = 'top';  // 스크롤 방향: String ['top', 'left']
-    this.sec = [];
-    this.secPos = [];
+    // this.findingSection = true;  // 섹션 위치 파악: Boolean
+    // this.scrollDirection = 'top';  // 스크롤 방향: String ['top', 'left']
+    // this.sec = [];
+    // this.secPos = [];
     // this.slider = {};
     // this.random = new Random().result;
     this.loadedImg = 0;
     // this.plugin = {};
-    this.oldSection = 0;
-    this.currentSection = 0;
-    this.winSize = this.scrollDirection === 'top' ? $(window).height() : $(window).width();
-    this.checkSectionPositioning = this.winSize / 2;
+    // this.oldSection = 0;
+    // this.currentSection = 0;
+    // this.winSize = this.scrollDirection === 'top' ? $(window).height() : $(window).width();
+    // this.checkSectionPositioning = this.winSize / 2;
 
     this._initEvent();
   }
@@ -42,11 +42,11 @@ class Herop {
     // this._scroll();
     // this._plugins();
     // this._windowLoad();  // window load!
-    this._resizeWindow();
+    // this._resizeWindow();
   }
 
   _plugins() {
-    this.callNiceScroll();
+    // this.callNiceScroll();
 
     // BX SLIDER: http://bxslider.com/options
     (function () {
@@ -75,14 +75,14 @@ class Herop {
     }());
 
     // TWEEN MAX: https://greensock.com/docs/#/HTML5/GSAP/
-    (function () {
-      _this.tweenAnimation();
-      _this.timeLineAnimation();
-    }());
+    // (function () {
+    //   _this.tweenAnimation();
+    //   _this.timeLineAnimation();
+    // }());
 
     // RELLAX: https://github.com/dixonandmoe/rellax
     (function () {
-      // let rellax = new Rellax('.rellax');
+      let rellax = new Rellax('.rellax');
       // data-rellax-percentage="0.5"
       // data-rellax-speed="7"
     }());
@@ -131,56 +131,56 @@ class Herop {
   //   });
   // }
 
-  _createSectionArray(callback) {
-    let length = $('section').length;
-
-    for (let i = 0; i < length; i++) {
-      this.sec.push('.sec' + (i+1));
-    }
-    callback(this, this.sec);
-  }
-
-  _offsetOfEachSection(_this, section) {
-    if (_this.findingSection) {
-      let _that = _this;
-      let _result = null;
-
-      section.forEach(function (item, index, array) {
-        if ($(item).length !== 0) {
-          switch (_that.scrollDirection) {
-            case 'top':
-              _result = $(item).offset().top;
-              break;
-            case 'left':
-              _result = $(item).offset().left;
-              break;
-          }
-
-          _that.secPos.push(_result);
-        }
-      });
-
-      console.info('EACH SECTION: ' + _that.secPos);
-    }
-  }
-
-  _addWindowLoadEvent(func) {  // 중복 로드(load) 처리
-    let oldonload = window.onload;
-    if (typeof window.onload != 'function') {
-      if (document.all && !document.querySelector) {
-        window.onload = func;
-      } else {
-        window.onload = func();
-      }
-    } else {
-      window.onload = function () {
-        if (oldonload) {
-          oldonload();
-        }
-        func();
-      }
-    }
-  }
+  // _createSectionArray(callback) {
+  //   let length = $('section').length;
+  //
+  //   for (let i = 0; i < length; i++) {
+  //     this.sec.push('.sec' + (i+1));
+  //   }
+  //   callback(this, this.sec);
+  // }
+  //
+  // _offsetOfEachSection(_this, section) {
+  //   if (_this.findingSection) {
+  //     let _that = _this;
+  //     let _result = null;
+  //
+  //     section.forEach(function (item, index, array) {
+  //       if ($(item).length !== 0) {
+  //         switch (_that.scrollDirection) {
+  //           case 'top':
+  //             _result = $(item).offset().top;
+  //             break;
+  //           case 'left':
+  //             _result = $(item).offset().left;
+  //             break;
+  //         }
+  //
+  //         _that.secPos.push(_result);
+  //       }
+  //     });
+  //
+  //     console.info('EACH SECTION: ' + _that.secPos);
+  //   }
+  // }
+  //
+  // _addWindowLoadEvent(func) {  // 중복 로드(load) 처리
+  //   let oldonload = window.onload;
+  //   if (typeof window.onload != 'function') {
+  //     if (document.all && !document.querySelector) {
+  //       window.onload = func;
+  //     } else {
+  //       window.onload = func();
+  //     }
+  //   } else {
+  //     window.onload = function () {
+  //       if (oldonload) {
+  //         oldonload();
+  //       }
+  //       func();
+  //     }
+  //   }
+  // }
 
   _imagesProgress(instance, image) {
     this.loadedImg++;
@@ -218,37 +218,37 @@ class Herop {
           _this._imagesProgress(instance, image);
         });
 
-      _this._createSectionArray(_this._offsetOfEachSection);
-      _this.onLoad();
+      // _this._createSectionArray(_this._offsetOfEachSection);
+      // _this.onLoad();
     });
   }
 
-  _checkCurrentSection() {
-    for (let prop in this.secPos) {
-      let index = parseInt(prop);
-
-      if (this.scrollLocate + this.checkSectionPositioning >= this.secPos[index] && this.scrollLocate + this.checkSectionPositioning < this.secPos[index + 1]) {
-        this._renewCurrentSection(index);
-      } else if (this.scrollLocate + this.checkSectionPositioning >= this.secPos[index] && this.secPos[index + 1] === undefined) {
-        this._renewCurrentSection(index);
-      }
-    }
-  }
-
-  _renewCurrentSection(index) {
-    if (this.currentSection !== index) {
-      this.oldSection = this.currentSection;
-      this.currentSection = index;
-      this.whenSectionChange(this.oldSection, this.currentSection);
-    }
-  }
-
-  _resizeWindow() {
-    $(window).on('resize', function () {
-      _this.winSize = _this.scrollDirection === 'top' ? $(this).height() : $(this).width();
-      _this.checkSectionPositioning = _this.winSize / 2;
-    });
-  }
+  // _checkCurrentSection() {
+  //   for (let prop in this.secPos) {
+  //     let index = parseInt(prop);
+  //
+  //     if (this.scrollLocate + this.checkSectionPositioning >= this.secPos[index] && this.scrollLocate + this.checkSectionPositioning < this.secPos[index + 1]) {
+  //       this._renewCurrentSection(index);
+  //     } else if (this.scrollLocate + this.checkSectionPositioning >= this.secPos[index] && this.secPos[index + 1] === undefined) {
+  //       this._renewCurrentSection(index);
+  //     }
+  //   }
+  // }
+  //
+  // _renewCurrentSection(index) {
+  //   if (this.currentSection !== index) {
+  //     this.oldSection = this.currentSection;
+  //     this.currentSection = index;
+  //     this.whenSectionChange(this.oldSection, this.currentSection);
+  //   }
+  // }
+  //
+  // _resizeWindow() {
+  //   $(window).on('resize', function () {
+  //     _this.winSize = _this.scrollDirection === 'top' ? $(this).height() : $(this).width();
+  //     _this.checkSectionPositioning = _this.winSize / 2;
+  //   });
+  // }
 
   // callNiceScroll() {
   //   // NICE SCROLL: https://github.com/inuyaksa/jquery.nicescroll
@@ -271,21 +271,21 @@ class Herop {
   //   this.$scrollBody.css({ overflow: 'hidden' });
   // }
 
-  onLoad() {
-    console.info('WINDOW LOADING COMPLETED');
-
-  }
-
-  scrollEvent() {
-    this._checkCurrentSection();
-    console.log('CURRENT SCROLL: ' + this.scrollLocate);
-
-  }
-
-  whenSectionChange(oldIndex, newIndex) {
-    console.log('Section change - OLDSEC: ' + oldIndex, 'NEWSEC: ' + newIndex);
-
-  }
+  // onLoad() {
+  //   console.info('WINDOW LOADING COMPLETED');
+  //
+  // }
+  //
+  // scrollEvent() {
+  //   this._checkCurrentSection();
+  //   console.log('CURRENT SCROLL: ' + this.scrollLocate);
+  //
+  // }
+  //
+  // whenSectionChange(oldIndex, newIndex) {
+  //   console.log('Section change - OLDSEC: ' + oldIndex, 'NEWSEC: ' + newIndex);
+  //
+  // }
 
   // timeLineAnimation() {
   //   // animation 1

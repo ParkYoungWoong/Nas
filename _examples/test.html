@@ -27,42 +27,45 @@
     <script src="../js/plugins/rellax.min.js"></script>
 
     <script src="../js/plugins/jquery.heropy.js"></script>
-    <script src="../js/test.js"></script>
 
 </head>
 <body>
 
-<ul class="target">
-    <li>001</li>
-    <li>002</li>
-    <li>003</li>
-    <li>004</li>
-    <li class="target">005</li>
-    <li class="target">006</li>
-    <li>007</li>
-    <li>008</li>
-    <li>009</li>
-    <li>010</li>
-</ul>
+<div>
+    <div class="section">
+        <ul class="target">
+            <li>001</li>
+            <li>002</li>
+            <li>003</li>
+            <li>004</li>
+            <li class="target">005</li>
+            <li class="target">006</li>
+            <li>007</li>
+            <li>008</li>
+            <li>009</li>
+            <li>010</li>
+        </ul>
 
-<ul class="pager">
-    <li>1</li>
-    <li>2</li>
-    <li>3</li>
-    <li>4</li>
-    <li>5</li>
-    <li>6</li>
-    <li>7</li>
-    <li>8</li>
-    <li>9</li>
-    <li>10</li>
-</ul>
+        <ul class="pager">
+            <li>1</li>
+            <li>2</li>
+            <li>3</li>
+            <li>4</li>
+            <li>5</li>
+            <li>6</li>
+            <li>7</li>
+            <li>8</li>
+            <li>9</li>
+            <li>10</li>
+        </ul>
+    </div>
+    <div class="section"></div>
+    <div class="section"></div>
+    <div class="section"></div>
+    <div class="section"></div>
+</div>
 
-<div class="section"></div>
-<div class="section"></div>
-<div class="section"></div>
-<div class="section"></div>
-<div class="section"></div>
+<div id="section-change-line"></div>
 
 <style>
     body {
@@ -71,6 +74,15 @@
     .section {
         height: 500px;
     }
+    .section:nth-child(1) { background: tomato; }
+    .section:nth-child(2) { background: royalblue; }
+    .section:nth-child(3) {
+        height: 777px;
+        background: lightsteelblue;
+    }
+    .section:nth-child(4) { background: hotpink; }
+    .section:nth-child(5) { background: yellowgreen; }
+
     .pager {
         margin: 10px;
     }
@@ -82,11 +94,25 @@
     .active {
         color: red;
     }
+
+    #section-change-line {
+        width: 300px;
+        height: 1px;
+        background: black;
+        opacity: .5;
+        position: fixed;
+        top: 0;
+        bottom: 0;
+        right: 0;
+        margin: auto;
+    }
 </style>
 
 <script>
     HEROPY.init({
+      onLoad: function () {
 
+      }
     });
 
     $('.target li').on('click', function () {
