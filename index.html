@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+  <title>SCROLL</title>
+
+  <meta charset="UTF-8"/>
+
+  <link rel="stylesheet" href="css/reset.css"/>
+  <link rel="stylesheet" href="css/main.css"/>
+  <link rel="stylesheet" href="css/mainJS.css">
+
+  <script src="js/lib/jquery.min.js"></script>
+  <script src="js/lib/jquery.easing.min.js"></script>
+  <script src="js/lib/modernizr.js"></script>
+
+  <script src="js/plugins/prefixfree.min.js"></script>
+  <script src="js/plugins/TweenMax.min.js"></script>
+  <script src="js/plugins/jquery.nicescroll.min.js"></script>
+  <script src="js/plugins/jquery.bxslider.min.js"></script>
+  <script src="js/plugins/imagesloaded.pkgd.min.js"></script>
+  <script src="js/plugins/rellax.min.js"></script>
+
+  <script src="js/plugins/jquery.heropy.js"></script>
+
+</head>
+<body>
+<div id="container" class="container">
+
+  <div class="section sec1">
+    <div class="index">1</div>
+    <ul class="pager clearfix">
+      <li>1</li>
+      <li>2</li>
+      <li>3</li>
+      <li>4</li>
+      <li>5</li>
+      <li>6</li>
+    </ul>
+  </div>
+  <div class="section sec2">
+    <div class="index">2</div>
+  </div>
+  <div class="section sec3">
+    <div class="index">3</div>
+  </div>
+  <div class="section sec4">
+    <div class="index">4</div>
+  </div>
+  <div class="section sec5">
+    <div class="index">5</div>
+  </div>
+
+  <div id="section-change-line">
+    <div class="info">
+      SCROLL: <span class="scroll-locate">0</span>
+      / SEC_OLD: <span class="section-old-index">0</span>
+      / SEC_NEW: <span class="section-new-index">0</span>
+    </div>
+  </div>
+
+</div>
+<div id="all_images"></div>
+<div id="progress_bar"></div>
+<script>
+  HEROPY.init({
+    imagePreloadUse: true,
+    imagePreloadList: 'slider-image1.jpg slider-image2.jpg slider-image3.jpg slider-image4.jpg',
+    scrollEvent: function (scrollLocate) {
+      $('#section-change-line .scroll-locate').text(scrollLocate);
+    },
+    whenSectionChange: function (oldIndex, newIndex) {
+      $('#section-change-line .section-old-index').text(oldIndex);
+      $('#section-change-line .section-new-index').text(newIndex);
+    }
+  });
+
+  $('.pager li').on('click', function () {
+    HEROPY.toggle().insertThis(this).toggleClass('active');
+  });
+</script>
+</body>
+</html>

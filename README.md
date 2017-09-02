@@ -56,6 +56,7 @@ HEROPY.init({
   // Images Preload
   imagePreloadUse: false,  // 전역 jQuery Image Preload Plugin 사용 여부
   imagePreloadSelector: 'body',  // 전역 jQuery Image Preload Plugin 으로 적용할 대상
+  imagePreloadDirectory: 'img/',  // 전역 jQuery Image Preload Plugin 에서 검색할 이미지 폴더 경로
   imagePreloadList: '',  // 전역 jQuery Image Preload Plugin 에서 사용할 이미지 목록 / img 폴더 안 / $ dir /b >list.txt
   // IMAGE PRELOAD: https://github.com/desandro/imagesloaded
   imagePreloadAlways: function (instance) {},

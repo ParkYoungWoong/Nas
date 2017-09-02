@@ -39,6 +39,7 @@ var HEROPY = (function (root, docs, $) {
     // Images Preload
     imagePreloadUse: false,  // 전역 jQuery Image Preload Plugin 사용 여부
     imagePreloadSelector: 'body',  // 전역 jQuery Image Preload Plugin 으로 적용할 대상
+    imagePreloadDirectory: 'img/',  // 전역 jQuery Image Preload Plugin 에서 검색할 이미지 폴더 경로
     imagePreloadList: '',  // 전역 jQuery Image Preload Plugin 에서 사용할 이미지 목록 / img 폴더 안 / $ dir /b >list.txt
     // IMAGE PRELOAD: https://github.com/desandro/imagesloaded
     imagePreloadAlways: function (instance) { return true; },
@@ -423,9 +424,9 @@ var HEROPY = (function (root, docs, $) {
   // IMAGE PRELOAD: https://github.com/desandro/imagesloaded
   var ImagePreload = (function () {
 
-    if (!_optsAll.imagePreloadUse) {
-      return console.warn('현재 옵션은 Images Preload 플러그인을 동작시키지 않습니다.');
-    }
+    // if (!_optsAll.imagePreloadUse) {
+    //   return console.warn('현재 옵션은 Images Preload 플러그인을 동작시키지 않습니다.');
+    // }
 
     var loadImageLength = 0;
     var instanceImageLength = 0;
@@ -435,8 +436,9 @@ var HEROPY = (function (root, docs, $) {
       // img 폴더로 이동
       // dir /b >list.txt
       var images = _optsAll.imagePreloadList; // Add here!
-      var imagesArr = images.split('\n');
+      var imagesArr = images.split(' ');
       var imagesLength = imagesArr.length;
+      var directory = _optsAll.imagePreloadDirectory;
       var url = '';
       var finishCode = '"),';
 
@@ -445,7 +447,7 @@ var HEROPY = (function (root, docs, $) {
           finishCode = '");';  // 마지막 이미지 끝 설정
         }
 
-        url = url.concat('url("img/' + imagesArr[i] + finishCode);
+        url = url.concat('url("' + directory + imagesArr[i] + finishCode);
       }
 
       $("#all_images").attr('style', 'background: ' + url);
