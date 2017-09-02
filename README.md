@@ -36,10 +36,10 @@ HEROPY.init({
   windowSplitRatio: 1 / 2,  // 섹션 체크 기준 화면 비율 / 스크롤할 때 화면의 어느 '비율' 지점에서 섹션의 변경 이벤트를 체크할 지 여부
   
   // General Methods
-  onLoad: function () { return true; },  // 화면이 준비되었을 때
-  scrollEvent: function (scrollLocate) { return true; },  // 스크롤할 때
-  whenSectionChange: function (oldIndex, newIndex) { return true; },  // 화면의 중심 섹션이 변경될 때
-  resizeWindow: function (windowSize) { return true; },  // 화면의 크기가 변경될 때
+  onLoad: function () {},  // 화면이 준비되었을 때
+  scrollEvent: function (scrollLocate) {},  // 스크롤할 때
+  whenSectionChange: function (oldIndex, newIndex) {},  // 화면의 중심 섹션이 변경될 때
+  resizeWindow: function (windowSize) {},  // 화면의 크기가 변경될 때
   
   // Nice Scroll
   niceScrollUse: true,  // 전역 jQuery Nice Scroll Plugin 사용 여부
@@ -58,10 +58,10 @@ HEROPY.init({
   imagePreloadSelector: 'body',  // 전역 jQuery Image Preload Plugin 으로 적용할 대상
   imagePreloadList: '',  // 전역 jQuery Image Preload Plugin 에서 사용할 이미지 목록 / img 폴더 안 / $ dir /b >list.txt
   // IMAGE PRELOAD: https://github.com/desandro/imagesloaded
-  imagePreloadAlways: function (instance) { return true; },
-  imagePreloadDone: function (instance) { return true; },
-  imagePreloadFail: function () { return true; },
-  imagePreloadProgress: function (instance, image) { return true; }
+  imagePreloadAlways: function (instance) {},
+  imagePreloadDone: function (instance) {},
+  imagePreloadFail: function () {},
+  imagePreloadProgress: function (instance, image) {}
 });
 ```
 
