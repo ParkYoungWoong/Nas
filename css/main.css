@@ -1,3 +1,13 @@
+.github {
+    position: fixed;
+    top: 30px;
+    right: 30px;
+    z-index: 1000;
+}
+.github img {
+    width: 40px;
+}
+
 .section {
     width: 100%;
     height: 600px;
