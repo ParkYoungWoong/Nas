@@ -1,28 +1,148 @@
-# mainJS
+# HEROPY 
 
 ## Call the JavaScript
 
 ```html
 <link rel="stylesheet" href="css/mainJS.css">
 
-<!--[if lt ie 9]>
-    <script src="js/lib/respond.min.js"></script>
-<![endif]-->
-
 <script src="js/lib/jquery.min.js"></script>
 <script src="js/lib/jquery.easing.min.js"></script>
 <script src="js/lib/modernizr.js"></script>
-<script src="js/lib/browser.min.js"></script>
 
 <script src="js/plugins/prefixfree.min.js"></script>
 <script src="js/plugins/TweenMax.min.js"></script>
-<script src="js/plugins/jquery.nicescroll.min.js"></script>
-<script src="js/plugins/jquery.bxslider.min.js"></script>
 <script src="js/plugins/imagesloaded.pkgd.min.js"></script>
 <script src="js/plugins/rellax.min.js"></script>
 
-<script src="js/plugins/random.js"></script>
-<script src="js/plugins/jquery.toggleFunction.js"></script>
+<script src="js/plugins/jquery.nicescroll.min.js"></script>
+<script src="js/plugins/jquery.bxslider.min.js"></script>
+<script src="js/plugins/jquery.heropy.js"></script>
 
-<script type="text/babel" src="js/main.js"></script>
+
+<script src="js/main.js"></script>
+```
+
+## Options
+
+### Init Options
+
+```js
+HEROPY.init({
+  // General Properties
+  lockSelectEvent: true,  // select 기능 사용 여부
+  throttleDuration: 200,  // 스크롤 속도 제어
+  sectionSelector: '.section',  // 섹션들의 공통 선택자
+  scrollDirection: 'vertical',  // 스크롤 방향 / 'horizontal'
+  windowSplitRatio: 1 / 2,  // 섹션 체크 기준 화면 비율 / 스크롤할 때 화면의 어느 '비율' 지점에서 섹션의 변경 이벤트를 체크할 지 여부
+  
+  // General Methods
+  onLoad: function () { return true; },  // 화면이 준비되었을 때
+  scrollEvent: function (scrollLocate) { return true; },  // 스크롤할 때
+  whenSectionChange: function (oldIndex, newIndex) { return true; },  // 화면의 중심 섹션이 변경될 때
+  resizeWindow: function (windowSize) { return true; },  // 화면의 크기가 변경될 때
+  
+  // Nice Scroll
+  niceScrollUse: true,  // 전역 jQuery Nice Scroll Plugin 사용 여부
+  niceScrollBody: 'html',  // 전역 jQuery Nice Scroll Plugin 으로 적용할 대상
+  niceScrollOptions: {  // 전역 jQuery Nice Scroll Plugin 옵션
+    // NICE SCROLL: https://github.com/inuyaksa/jquery.nicescroll
+    cursorcolor: "rgba(0,0,0,.75)",
+    cursorwidth: 10,
+    cursorborderradius: 0,
+    cursorborder: "none",
+    zindex: 999
+  },
+  
+  // Images Preload
+  imagePreloadUse: false,  // 전역 jQuery Image Preload Plugin 사용 여부
+  imagePreloadSelector: 'body',  // 전역 jQuery Image Preload Plugin 으로 적용할 대상
+  imagePreloadList: '',  // 전역 jQuery Image Preload Plugin 에서 사용할 이미지 목록 / img 폴더 안 / $ dir /b >list.txt
+  // IMAGE PRELOAD: https://github.com/desandro/imagesloaded
+  imagePreloadAlways: function (instance) { return true; },
+  imagePreloadDone: function (instance) { return true; },
+  imagePreloadFail: function () { return true; },
+  imagePreloadProgress: function (instance, image) { return true; }
+});
+```
+
+### Public Methods
+
+#### `HEROPY.toggle()`
+
+```js
+/**
+* 토글 함수를 시작합니다.
+* @param - 없음
+*/
+HEROPY.toggle();
+
+
+// TARGETING METHODS
+/**
+* 대상 내에서 이벤트 타겟을 처리
+* @param {object} $this - 이벤트 타겟  
+*/
+HEROPY.toggle().insertThis(this);
+
+/**
+* 일반적으로 대상의 밖에서 이벤트 타겟의 인덱스 번호와 콘텐스트로 처리
+* @param {number} index - 이벤트 타겟의 인덱스 번호
+* @param {string} context - 이벤트 타겟이 속한 콘텍스트(선택자)
+*/
+HEROPY.toggle().insertIndex(index, context);
+
+
+// FUNCTIONS METHODS
+/**
+* 클래스 이름으로 토글
+* @param {string} className - 토글할 클래스 이름
+*/
+HEROPY.toggle().TARGETING_METHOD().toggleClass(className);
+
+/**
+* 기능(함수)으로 토글 
+* @param {object} method - 토글할 기능 객체
+* @method remove - 기능 제거하기
+* @param {object} $remove - 기능을 제거할 대상
+* @method add - 기능 추가하기
+* @param {object} - 기능을 추가할 대상
+*/
+HEROPY.toggle().TARGETING_METHOD().toggleFunction(methods);
+
+// Example
+HEROPY.toggle().TARGETING_METHOD().toggleFunction({
+  remove: function ($remove) {
+    $remove.hide();  
+  },
+  add: function ($add) {
+    $add.show();
+  }
+});
+```
+
+#### `HEROPY.random()`
+
+```js
+/**
+* 특정 범위의 랜덤한 수(난수)를 반환합니다.
+* @param {number} min - 최소 난수  
+* @param {number} max - 최대 난수
+* @param {boolean} integer=false - 정수 혹은 실수(소수점)
+* @param {number} toFixed=2 - 실수일 경우 소수점 자리수
+*/
+HEROPY.random();
+
+// Example 
+HEROPY.random(1, 10, true);  // 7
+HEROPY.random(1, 10);  // 4.62
+HEROPY.random(1, 10, false, 2);  // 9.27
+HEROPY.random(1, 10, false, 4);  // 4.6284
+HEROPY.random(1, 10, 4);  // 2.1286
+```
+
+#### Nice Scroll Methods
+
+```js
+HEROPY.startNiceScroll();  // 전역 Nice Scroll Plugin 시작하기 / 기본으로 실행되어 있음
+HEROPY.stopNiceScroll();  // 전역 Nice Scroll Plugin 정지하기
 ```

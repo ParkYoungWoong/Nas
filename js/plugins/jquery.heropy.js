@@ -3,16 +3,29 @@ var HEROPY = (function (root, docs, $) {
 
 
   /**
-   * Options
-   * @type {{isNiceScroll: boolean, niceScrollBody: string, niceScrollOptions: {cursorcolor: string, cursorwidth: number, cursorborderradius: number, cursorborder: string, zindex: number}, lockSelectEvent: boolean, throttleDuration: number, scrollDirection: string, onLoad: onLoad, scrollEvent: scrollEvent, whenSectionChange: whenSectionChange}}
+   *
+   * @type {{lockSelectEvent: boolean, throttleDuration: number, sectionSelector: string, scrollDirection: string, windowSplitRatio: number, onLoad: onLoad, scrollEvent: scrollEvent, whenSectionChange: whenSectionChange, resizeWindow: resizeWindow, niceScrollUse: boolean, niceScrollBody: string, niceScrollOptions: {cursorcolor: string, cursorwidth: number, cursorborderradius: number, cursorborder: string, zindex: number}, imagePreloadUse: boolean, imagePreloadSelector: string, imagePreloadList: string, imagePreloadAlways: imagePreloadAlways, imagePreloadDone: imagePreloadDone, imagePreloadFail: imagePreloadFail, imagePreloadProgress: imagePreloadProgress}}
    * @private
    */
 
 
   var _optsAll = {
 
-    // Properties
-    isNiceScroll: true,  // 전역 jQuery Nice Scroll Plugin 사용 여부
+    // General Properties
+    lockSelectEvent: true,  // select 기능 사용 여부
+    throttleDuration: 200,  // 스크롤 속도 제어
+    sectionSelector: '.section',  // 섹션들의 공통 선택자
+    scrollDirection: 'vertical',  // 스크롤 방향
+    windowSplitRatio: 1 / 2,  // 섹션 체크 기준 화면 비율 / 스크롤할 때 화면의 어느 '비율' 지점에서 섹션의 변경 이벤트를 체크할 지 여부
+
+    // General Methods
+    onLoad: function () { return true; },  // 화면이 준비되었을 때
+    scrollEvent: function (scrollLocate) { return true; },  // 스크롤할 때
+    whenSectionChange: function (oldIndex, newIndex) { return true; },  // 화면의 중심 섹션이 변경될 때
+    resizeWindow: function (windowSize) { return true; },  // 화면의 크기가 변경될 때
+
+    // Nice Scroll
+    niceScrollUse: true,  // 전역 jQuery Nice Scroll Plugin 사용 여부
     niceScrollBody: 'html',  // 전역 jQuery Nice Scroll Plugin 으로 적용할 대상
     niceScrollOptions: {  // 전역 jQuery Nice Scroll Plugin 옵션
       // NICE SCROLL: https://github.com/inuyaksa/jquery.nicescroll
@@ -22,17 +35,16 @@ var HEROPY = (function (root, docs, $) {
       cursorborder: "none",
       zindex: 999
     },
-    lockSelectEvent: true,  // select 기능 사용 여부
-    throttleDuration: 200,  // 스크롤 속도 제어
-    sectionSelector: '.section',  // 섹션들의 공통 선택자
-    scrollDirection: 'vertical',  // 스크롤 방향
-    windowSplitRatio: 1 / 2,  // 섹션 체크 기준 화면 비율 / 스크롤할 때 화면의 어느 '비율' 지점에서 섹션의 변경 이벤트를 체크할 지 여부
 
-    // Methods
-    onLoad: function () { return true; },  // 화면이 준비되었을 때
-    scrollEvent: function (scrollLocate) { return true; },  // 스크롤할 때
-    whenSectionChange: function (oldIndex, newIndex) { return true; },  // 화면의 중심 섹션이 변경될 때
-    resizeWindow: function (windowSize) { return true; }  // 화면의 크기가 변경될 때
+    // Images Preload
+    imagePreloadUse: false,  // 전역 jQuery Image Preload Plugin 사용 여부
+    imagePreloadSelector: 'body',  // 전역 jQuery Image Preload Plugin 으로 적용할 대상
+    imagePreloadList: '',  // 전역 jQuery Image Preload Plugin 에서 사용할 이미지 목록 / img 폴더 안 / $ dir /b >list.txt
+    // IMAGE PRELOAD: https://github.com/desandro/imagesloaded
+    imagePreloadAlways: function (instance) { return true; },
+    imagePreloadDone: function (instance) { return true; },
+    imagePreloadFail: function () { return true; },
+    imagePreloadProgress: function (instance, image) { return true; }
   };
 
 
@@ -41,7 +53,7 @@ var HEROPY = (function (root, docs, $) {
    */
 
 
-    // INITIALIZE
+  // INITIALIZE
   var init = (function () {
 
     function init(options) {
@@ -51,6 +63,7 @@ var HEROPY = (function (root, docs, $) {
       _lockSelectEvent();
       ThrottleScroll._scroll();
       OnLoad._windowLoad();
+      _optsAll.imagePreloadUse && ImagePreload._imagesPreload();  // `_optsAll.imagePreloadUse` 가 `true`일 때만 동작
     }
 
     return init;
@@ -125,20 +138,88 @@ var HEROPY = (function (root, docs, $) {
 
 
   // CLASS RANDOM
-  var Random = (function () {
+  var RangeRandom = (function () {
 
-    function Random(min, max) {
-      this.init(min, max);
+    var _this = null;
+
+    function Random() {
+      _this = this;
     }
 
     Random.prototype = {
-      init: function (min, max) {
-        return min + max;
+      init: function (min, max, integer, toFixed) {
+        _this.min = min;
+        _this.max = max;
+
+        if (typeof integer === 'number') {
+          _this.toFixed = integer;
+          _this.integer = false;
+        } else {
+          _this.toFixed = toFixed || 2;
+          _this.integer = integer || false;
+        }
+
+        if (_this.integer) {
+          return _this.returnInteger();
+        } else {
+          return _this.returnFloat();
+        }
+      },
+
+      returnInteger: function () {
+        return parseInt(
+          Math.random() * (_this.max - _this.min + 1) + _this.min
+        );
+      },
+
+      returnFloat: function () {
+        return parseFloat(
+          (Math.random() * (_this.max - _this.min) + _this.min)
+            .toFixed(_this.toFixed)
+        );
       }
     };
 
     return Random;
   }());
+
+
+  // CLASS RANDOM
+  // var RangeRandom = (function () {
+  //
+  //   function Random(min, max, integer, toFixed) {
+  //     this.min = min;
+  //     this.max = max;
+  //     this.toFixed = toFixed;
+  //
+  //     this.init(integer);
+  //   }
+  //
+  //   Random.prototype = {
+  //     init: function (integer) {
+  //       if (integer) {
+  //         return this.returnIntegerRandom();
+  //       } else {
+  //         return this.returnFloatRandom();
+  //       }
+  //     },
+  //
+  //     returnIntegerRandom: function () {
+  //       return parseInt(
+  //         Math.random() * (this.max - this.min + 1) + this.min
+  //       );
+  //     },
+  //
+  //     returnFloatRandom: function () {
+  //       return parseFloat(
+  //         (Math.random() * (this.max - this.min) + this.min)
+  //           .toFixed(this.toFixed)
+  //       );
+  //     }
+  //   };
+  //
+  //   return Random;
+  // }());
 
 
   // CLASS THROTTLE SCROLL
@@ -190,7 +271,7 @@ var HEROPY = (function (root, docs, $) {
   }());
 
 
-  // CLASS WINDOW ON LOAD
+  // CLASS WINDOW ONLOAD
   var OnLoad = (function () {
 
     function _addWindowLoadEvent(func) {  // 중복 로드(load) 처리
@@ -222,6 +303,7 @@ var HEROPY = (function (root, docs, $) {
       Section._eachOffset();
       Window._computedWindowSize();
       $(root).on('resize', Window._resizeHandler);
+      _optsAll.imagePreloadUse && ImagePreload._imagesOnload();  // `_optsAll.imagePreloadUse` 가 `true`일 때만 동작
     }
 
     return {
@@ -256,7 +338,7 @@ var HEROPY = (function (root, docs, $) {
         secOffsetArray.push(result);
       });
 
-      console.info('EACH SECTION: ' + secOffsetArray);
+      console.info('SECTION - LENGTH: ' + secOffsetArray.length + ', OFFSET: ' + secOffsetArray);
     }
 
     function _checkCurrentSection(scrollLocate) {
@@ -338,6 +420,106 @@ var HEROPY = (function (root, docs, $) {
   }());
 
 
+  // IMAGE PRELOAD: https://github.com/desandro/imagesloaded
+  var ImagePreload = (function () {
+
+    if (!_optsAll.imagePreloadUse) {
+      return console.warn('현재 옵션은 Images Preload 플러그인을 동작시키지 않습니다.');
+    }
+
+    var loadImageLength = 0;
+    var instanceImageLength = 0;
+    var progressPosition = 0;
+
+    function _imagesPreload() {
+      // img 폴더로 이동
+      // dir /b >list.txt
+      var images = _optsAll.imagePreloadList; // Add here!
+      var imagesArr = images.split('\n');
+      var imagesLength = imagesArr.length;
+      var url = '';
+      var finishCode = '"),';
+
+      for (var i = 0; i < imagesLength; i++) {
+        if (i >= imagesArr.length - 1) {
+          finishCode = '");';  // 마지막 이미지 끝 설정
+        }
+
+        url = url.concat('url("img/' + imagesArr[i] + finishCode);
+      }
+
+      $("#all_images").attr('style', 'background: ' + url);
+    }
+
+    function _imagesProgress(instance, image) {
+      loadImageLength++;
+
+      instanceImageLength = instance.images.length;
+      progressPosition = (loadImageLength / instanceImageLength) * 100;
+
+      $('#progress_bar').css({
+        width: progressPosition + '%'
+      });
+    }
+
+    function _imagesOnload() {
+      $(_optsAll.imagePreloadSelector).imagesLoaded()
+        .always(function (instance) {
+          always(instance);
+        })
+        .done(function (instance) {
+          done(instance);
+        })
+        .fail(function () {
+          fail();
+        })
+        .progress(function (instance, image) {
+          progress(instance, image);
+        });
+    }
+
+    function always(instance) {
+      console.info('All images loaded');
+
+      $("#progress_bar").fadeOut(500);
+      $("#container").animate({opacity: 1}, 500, function () {
+        // $('body').css({ background: 'black' });
+      });
+
+      _optsAll.imagePreloadAlways(instance);
+    }
+
+    function done(instance) {
+      console.info('All images successfully loaded');
+
+      _optsAll.imagePreloadDone(instance);
+    }
+
+    function fail() {
+      console.info('All images loaded, at least one is broken');
+
+      _optsAll.imagePreloadFail();
+    }
+
+    function progress(instance, image) {
+      var result = image.isLoaded ? 'loaded' : 'broken';
+
+      if (result === 'broken') {
+        console.info('Image is ' + result + ' for ' + image.img.src);
+      }
+
+      _imagesProgress(instance, image);
+      _optsAll.imagePreloadProgress(instance, image);
+    }
+
+    return {
+      _imagesPreload: _imagesPreload,
+      _imagesOnload: _imagesOnload
+    }
+
+  }());
+
+
   /**
    *
    * @private
@@ -346,8 +528,9 @@ var HEROPY = (function (root, docs, $) {
 
   // jQUERY NICE SCROLL
   function _startNiceScroll() {
-    if (!_optsAll.isNiceScroll)
+    if (!_optsAll.niceScrollUse) {
       return console.warn('현재 옵션은 jQuery Nice Scroll 플러그인을 동작시키지 않습니다.');
+    }
 
     $(_optsAll.niceScrollBody).niceScroll(_optsAll.niceScrollOptions);
   }
@@ -384,7 +567,7 @@ var HEROPY = (function (root, docs, $) {
   return {
     init: init,
     toggle: new ToggleFunction().toggle,
-    random: new Random().init,
+    random: new RangeRandom().init,
     startNiceScroll: _startNiceScroll,
     stopNiceScroll: _stopNiceScroll
   }

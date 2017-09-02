@@ -271,21 +271,21 @@ class Herop {
   //   this.$scrollBody.css({ overflow: 'hidden' });
   // }
 
-  // onLoad() {
-  //   console.info('WINDOW LOADING COMPLETED');
-  //
-  // }
-  //
-  // scrollEvent() {
-  //   this._checkCurrentSection();
-  //   console.log('CURRENT SCROLL: ' + this.scrollLocate);
-  //
-  // }
-  //
-  // whenSectionChange(oldIndex, newIndex) {
-  //   console.log('Section change - OLDSEC: ' + oldIndex, 'NEWSEC: ' + newIndex);
-  //
-  // }
+  onLoad() {
+    console.info('WINDOW LOADING COMPLETED');
+
+  }
+
+  scrollEvent() {
+    this._checkCurrentSection();
+    console.log('CURRENT SCROLL: ' + this.scrollLocate);
+
+  }
+
+  whenSectionChange(oldIndex, newIndex) {
+    console.log('Section change - OLDSEC: ' + oldIndex, 'NEWSEC: ' + newIndex);
+
+  }
 
   // timeLineAnimation() {
   //   // animation 1
