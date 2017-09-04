@@ -33,7 +33,9 @@ var HEROPY = (function (root, docs, $) {
       cursorwidth: 10,
       cursorborderradius: 0,
       cursorborder: "none",
-      zindex: 999
+      zindex: 999,
+      scrollspeed: 60,
+      mousescrollstep: 40
     },
 
     // Images Preload
