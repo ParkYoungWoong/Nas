@@ -89,13 +89,13 @@ var HEROPY = (function (root, docs, $) {
 
     function _toggleFunctionRemove(removeFunc) {
       removeFunc(
-        this.$context.not(this.$context.eq(this.index))
+        _opts.$context.not(_opts.$context.eq(_opts.index))
       );
     }
 
     function _toggleFunctionAdd(addFunc) {
       addFunc(
-        this.$context.eq(this.index)
+        _opts.$context.eq(_opts.index)
       );
     }
 
