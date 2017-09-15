@@ -136,7 +136,6 @@ var HEROPY = (function (root, docs, $) {
     };
 
     return Toggle;
-
   }());
 
 
@@ -185,44 +184,6 @@ var HEROPY = (function (root, docs, $) {
 
     return Random;
   }());
-
-
-  // CLASS RANDOM
-  // var RangeRandom = (function () {
-  //
-  //   function Random(min, max, integer, toFixed) {
-  //     this.min = min;
-  //     this.max = max;
-  //     this.toFixed = toFixed;
-  //
-  //     this.init(integer);
-  //   }
-  //
-  //   Random.prototype = {
-  //     init: function (integer) {
-  //       if (integer) {
-  //         return this.returnIntegerRandom();
-  //       } else {
-  //         return this.returnFloatRandom();
-  //       }
-  //     },
-  //
-  //     returnIntegerRandom: function () {
-  //       return parseInt(
-  //         Math.random() * (this.max - this.min + 1) + this.min
-  //       );
-  //     },
-  //
-  //     returnFloatRandom: function () {
-  //       return parseFloat(
-  //         (Math.random() * (this.max - this.min) + this.min)
-  //           .toFixed(this.toFixed)
-  //       );
-  //     }
-  //   };
-  //
-  //   return Random;
-  // }());
 
 
   // CLASS THROTTLE SCROLL
@@ -530,18 +491,20 @@ var HEROPY = (function (root, docs, $) {
    */
 
 
-  // jQUERY NICE SCROLL
+  // jQUERY NICE SCROLL START
   function _startNiceScroll() {
     if (!_optsAll.niceScrollUse) {
       return console.warn('현재 옵션은 jQuery Nice Scroll 플러그인을 동작시키지 않습니다.');
     }
 
+    console.info('Start Nice Scroll!');
     $(_optsAll.niceScrollBody).niceScroll(_optsAll.niceScrollOptions);
   }
 
 
   // jQUERY NICE SCROLL STOP
   function _stopNiceScroll() {
+    console.info('Stop Nice Scroll!');
     $(_optsAll.niceScrollBody).getNiceScroll().remove();
     $(_optsAll.niceScrollBody).css({ overflow: 'hidden' });
   }
