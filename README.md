@@ -148,6 +148,6 @@ HEROPY.random(1, 10, 4);  // 2.1286
 #### Nice Scroll Methods
 
 ```js
-HEROPY.startNiceScroll();  // 전역 Nice Scroll Plugin 시작하기 / 기본으로 실행되어 있음
+HEROPY.startNiceScroll();  // 전역 Nice Scroll Plugin 시작하기 / 기본으로 실행되어 있습니다
 HEROPY.stopNiceScroll();  // 전역 Nice Scroll Plugin 정지하기
 ```
