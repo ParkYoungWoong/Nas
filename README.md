@@ -10,16 +10,18 @@
 <script src="js/lib/jquery.min.js"></script>
 <script src="js/lib/jquery.easing.min.js"></script>
 <script src="js/lib/modernizr.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/lodash@4.17.4/lodash.min.js"></script>
+<script src="js/lib/vue.js"></script>
 
 <script src="js/plugins/prefixfree.min.js"></script>
 <script src="js/plugins/TweenMax.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/1.20.3/plugins/ScrollToPlugin.min.js"></script>
 <script src="js/plugins/imagesloaded.pkgd.min.js"></script>
 <script src="js/plugins/rellax.min.js"></script>
 
 <script src="js/plugins/jquery.nicescroll.min.js"></script>
 <script src="js/plugins/jquery.bxslider.min.js"></script>
 <script src="js/plugins/jquery.heropy.js"></script>
-
 
 <script src="js/main.js"></script>
 ```
@@ -125,29 +127,21 @@ HEROPY.toggle().TARGETING_METHOD().toggleFunction({
 });
 ```
 
-#### `HEROPY.random()`
-
-```js
-/**
-* 특정 범위의 랜덤한 수(난수)를 반환합니다.
-* @param {number} min - 최소 난수  
-* @param {number} max - 최대 난수
-* @param {boolean} integer=false - 정수 혹은 실수(소수점)
-* @param {number} toFixed=2 - 실수일 경우 소수점 자리수
-*/
-HEROPY.random();
-
-// Example 
-HEROPY.random(1, 10, true);  // 7
-HEROPY.random(1, 10);  // 4.62
-HEROPY.random(1, 10, false, 2);  // 9.27
-HEROPY.random(1, 10, false, 4);  // 4.6284
-HEROPY.random(1, 10, 4);  // 2.1286
-```
-
 #### Nice Scroll Methods
 
 ```js
 HEROPY.startNiceScroll();  // 전역 Nice Scroll Plugin 시작하기 / 기본으로 실행되어 있습니다
 HEROPY.stopNiceScroll();  // 전역 Nice Scroll Plugin 정지하기
+```
+
+#### Section Properties
+
+```js
+/**
+* 섹션의 `offset` 값을 배열로 반환 
+* @type {Array}
+*/
+console.log(
+  HEROPY.getOffsetEachSection
+);
 ```

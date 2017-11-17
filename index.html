@@ -13,14 +13,17 @@
   <script src="js/lib/jquery.min.js"></script>
   <script src="js/lib/jquery.easing.min.js"></script>
   <script src="js/lib/modernizr.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/lodash@4.17.4/lodash.min.js"></script>
+  <script src="js/lib/vue.js"></script>
 
   <script src="js/plugins/prefixfree.min.js"></script>
   <script src="js/plugins/TweenMax.min.js"></script>
-  <script src="js/plugins/jquery.nicescroll.min.js"></script>
-  <script src="js/plugins/jquery.bxslider.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/1.20.3/plugins/ScrollToPlugin.min.js"></script>
   <script src="js/plugins/imagesloaded.pkgd.min.js"></script>
   <script src="js/plugins/rellax.min.js"></script>
 
+  <script src="js/plugins/jquery.nicescroll.min.js"></script>
+  <script src="js/plugins/jquery.bxslider.min.js"></script>
   <script src="js/plugins/jquery.heropy.js"></script>
 
 </head>
@@ -84,6 +87,8 @@
   $('.pager li').on('click', function () {
     HEROPY.toggle().insertThis(this).toggleClass('active');
   });
+
+  console.log(HEROPY.getOffsetEachSection);
 </script>
 </body>
 </html>

@@ -139,53 +139,6 @@ var HEROPY = (function (root, docs, $) {
   }());
 
 
-  // CLASS RANDOM
-  var RangeRandom = (function () {
-
-    var _this = null;
-
-    function Random() {
-      _this = this;
-    }
-
-    Random.prototype = {
-      init: function (min, max, integer, toFixed) {
-        _this.min = min;
-        _this.max = max;
-
-        if (typeof integer === 'number') {
-          _this.toFixed = integer;
-          _this.integer = false;
-        } else {
-          _this.toFixed = toFixed || 2;
-          _this.integer = integer || false;
-        }
-
-        if (_this.integer) {
-          return _this.returnInteger();
-        } else {
-          return _this.returnFloat();
-        }
-      },
-
-      returnInteger: function () {
-        return parseInt(
-          Math.random() * (_this.max - _this.min + 1) + _this.min
-        );
-      },
-
-      returnFloat: function () {
-        return parseFloat(
-          (Math.random() * (_this.max - _this.min) + _this.min)
-            .toFixed(_this.toFixed)
-        );
-      }
-    };
-
-    return Random;
-  }());
-
-
   // CLASS THROTTLE SCROLL
   var ThrottleScroll = (function () {
 
@@ -303,6 +256,8 @@ var HEROPY = (function (root, docs, $) {
       });
 
       console.info('SECTION - LENGTH: ' + secOffsetArray.length + ', OFFSET: ' + secOffsetArray);
+
+      return secOffsetArray;
     }
 
     function _checkCurrentSection(scrollLocate) {
@@ -534,7 +489,7 @@ var HEROPY = (function (root, docs, $) {
   return {
     init: init,
     toggle: new ToggleFunction().toggle,
-    random: new RangeRandom().init,
+    getOffsetEachSection: Section._eachOffset(),
     startNiceScroll: _startNiceScroll,
     stopNiceScroll: _stopNiceScroll
   }
